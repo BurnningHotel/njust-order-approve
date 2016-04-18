@@ -6,7 +6,7 @@ class Index extends Layout\Common
 {
     public function __index()
     {
-        return $this->redirect('home');
+        return $this->redirect('order');
     }
 
     public function actionOrder()
