@@ -27,6 +27,11 @@ if (count($requests)) foreach ($requests as $vRequest) {?>
         <li title="<?=H($vRequest->order->vendor->name)?>"><?=H($vRequest->order->vendor->name)?></li>
         <li><?=H(money_format('%.2n', $vRequest->order->price))?></li>
         <li><?=H(\Gini\ORM\Request::$status_titles[$vRequest->status])?></li>
+        <li>
+            <?php foreach ($operators as $vKey=>$vOp) {?>
+            <span data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
+            <?php }?>
+        </li>
     </ul>
 <?php }?>
 

@@ -32,7 +32,8 @@ class Request extends \Gini\Controller\CGI
         }
 
         return \Gini\IoC::construct('\Gini\CGI\Response\HTML', V('order/list', [
-            'requests'=> $requests
+            'requests'=> $requests,
+            'operators'=> self::_getAllowedOperators($group->id)
         ]));
     }
 
