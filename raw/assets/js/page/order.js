@@ -7,7 +7,7 @@ define('page/order', ['jquery', 'utils/bootbox'], function(jQuery, Bootbox) {
 			key: key
 			,id: id
 		}, function(modal) {
-			$(modal).show();
+			$(modal).modal('show');
 		});
 	});
 	$(document).on('click', '.app-op-submit-handler', function() {
