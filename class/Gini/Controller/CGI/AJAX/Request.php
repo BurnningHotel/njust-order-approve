@@ -58,8 +58,8 @@ class Request extends \Gini\Controller\CGI
         }
         $requests = those('request')->query($sql, null, $params);
 
-        foreach ($requests as &$request) {
-            $request->order = a('order', $request->voucher);
+        foreach ($requests as $request) {
+            $request->order = a('order', ['voucher'=> $request->voucher]);
         }
         return $requests;
     }

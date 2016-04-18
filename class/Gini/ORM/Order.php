@@ -116,8 +116,11 @@ class Order extends Hub\RObject
 
     protected function fetchRPC($criteria)
     {
-        // TODO 需要确认mall-old提供了对应的API
         $rpc = self::getRPC('order');
+        // 因为mall-old的getOrderAPI只支持传一个voucher
+        if (is_array($criteria) && isset($criteria['voucher'])) {
+            $criteria = $criteria['voucher'];
+        }
         return $rpc->mall->order->getOrder($criteria);
     }
 
