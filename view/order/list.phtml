@@ -18,7 +18,7 @@ $vAllowOperate = count($operators);
     if (count($requests)) foreach ($requests as $vRequest) {?>
         <ul class="list-unstyled ul-list clearfix row<?=$vAllowOperate ? '' : ' ul-list-noop'?>">
             <li style="font-size:11px;line-height:3.2em"><?=H($vRequest->order->ctime)?></li>
-            <li><?=H($vRequest->order->voucher)?></li>
+            <li><a href="order-info/<?=H($vRequest->id)?>"><?=H($vRequest->order->voucher)?></a></li>
             <li>
             <?php 
             $vItems = (array)$vRequest->order->items;

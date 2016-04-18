@@ -17,6 +17,14 @@ class Index extends Layout\Common
         $this->view->body = V('order', $vars);
     }
 
+    public function actionOrderInfo($requestID)
+    {
+        $request = a('request', $requestID);
+        $this->view->body = V('order/info', [
+            'request'=> $request
+        ]);
+    }
+
     public function actionLogout()
     {
         \Gini\Gapper\Client::logout();
