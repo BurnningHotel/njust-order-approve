@@ -47,7 +47,8 @@ class Request extends \Gini\Controller\CGI
             $sql = "SELECT id FROM request WHERE status in (:status)";
             $params[':status'] = implode(',', $status);  
         }
-        if ($querystring) {
+
+        if (!$querystring) {
             $sql = "{$sql} LIMIT {$start}, {$limit}";
         }
         else {
@@ -55,7 +56,7 @@ class Request extends \Gini\Controller\CGI
             $sql = "{$sql} {$cond} (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring)) LIMIT {$start}, {$limit}";
             $params[':voucher'] = $params[':querystring'] = $querystring;
         }
-        $requests = those('request')->query($sql);
+        $requests = those('request')->query($sql, null, $params);
         return $requests;
     }
 
