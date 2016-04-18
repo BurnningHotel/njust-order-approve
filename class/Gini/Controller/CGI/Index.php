@@ -20,8 +20,10 @@ class Index extends Layout\Common
     public function actionOrderInfo($requestID)
     {
         $request = a('request', $requestID);
+        $order = a('order', $request->voucher);
         $this->view->body = V('order/info', [
-            'request'=> $request
+            'request'=> $request,
+            'order'=> $order
         ]);
     }
 
