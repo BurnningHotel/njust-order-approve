@@ -1,0 +1,17 @@
+{
+    "id": "njust-order-approve",
+    "name": "NJUST order multiply approval",
+    "description": "App description...",
+    "version": "0.1.0",
+    "dependencies": {
+        "gini": "*",
+        "gapper": "*"
+    },
+    "rurl": {
+        "img": "assets/img",
+        "css": "assets/css",
+        "js": "assets/js",
+        "*": "assets"
+    }
+}
+

@@ -1,0 +1,6 @@
+---
+default:
+  dsn: mysql:dbname=DATABASE;host=HOST
+  username: USERNAME
+  password: PASSWORD
+...
