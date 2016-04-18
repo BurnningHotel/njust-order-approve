@@ -11,10 +11,10 @@ if (count($requests)) foreach ($requests as $vRequest) {?>
     <ul class="list-unstyled ul-list clearfix">
         <li style="font-size:11px;"><?=H($vRequest->order->ctime)?></li>
         <li><?=H($vRequest->order->voucher)?></li>
-        <li><?=H($vRequest->order->items)?></li>
-        <li><?=H($vRequest->order->requester->name)?></li>
+        <li><?=J($vRequest->order->items)?></li>
+        <li><?=H($vRequest->order->group->name)?></li>
         <li><?=H($vRequest->order->vendor->name)?></li>
-        <li><?=H(money_format('%.2n', $vRequest->Order->price))?></li>
+        <li><?=H(money_format('%.2n', $vRequest->order->price))?></li>
         <li><?=H(\Gini\ORM\Request::$status_titles[$vRequest->status])?></li>
     </ul>
 <?php }?>

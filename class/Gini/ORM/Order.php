@@ -4,31 +4,13 @@ namespace Gini\ORM;
 
 class Order extends Hub\RObject
 {
-    public $vendor = 'object:vendor';
-    public $group = 'object:group';
-    public $requester = 'object:user';
-    public $request_date = 'datetime';
-    public $transferred_date = 'datetime';
-    public $invoice_title = 'string:120';
-    public $address = 'string:120';
-    public $phone = 'string:120';
-    public $postcode = 'string:120';
-    public $email = 'string:120';
-    public $note = 'string:250';
     public $voucher = 'string:120';
     public $price = 'double';
-    public $status = 'int';
-    public $review_status = 'int';
-    public $payment_status = 'int';
-    public $deliver_status = 'int';
-    public $customized = 'int';
-    public $synced = 'int';
-    public $items = 'array';
     public $ctime = 'datetime';
-    public $mtime = 'datetime';
-    public $operator = 'object:user';
-    public $label = 'string:8';
-    public $hash = 'string:40';
+    public $status = 'int';
+    public $group = 'object:group';
+    public $vendor = 'object:vendor';
+    public $items = 'array';
 
     const STATUS_NEED_VENDOR_APPROVE = 0;
     const STATUS_READY_TO_ORDER = 1;
@@ -83,31 +65,13 @@ class Order extends Hub\RObject
     {
         // TODO 需要确保hub-order API返回的数据符合要求
         $data = [];
-        $data['vendor_id'] = (int)$rdata['vendor'];
-        $data['group_id'] = (int)$rdata['group'];
-        $data['requester_id'] = (int)$rdata['requester'];
-        $data['request_date'] = $rdata['request_data']; // datetime
-        $data['transferred_date'] = $rdata['transferred_date']; // datetime
-        $data['invoice_title'] = $rdata['invoice_title'];
-        $data['address'] = $rdata['address'];
-        $data['phone'] = $rdata['phone'];
-        $data['postcode'] = $rdata['postcode'];
-        $data['email'] = $rdata['email'];
-        $data['note'] = $rdata['note'];
         $data['voucher'] = $rdata['voucher'];
         $data['price'] = (float) $rdata['price'];
-        $data['status'] = (int)$rdata['status'];
-        $data['review_status'] = (int)$rdata['review_status'];
-        $data['payment_status'] = (int)$rdata['payment_status'];
-        $data['deliver_status'] = (int)$rdata['deliver_status'];
-        $data['customized'] = (int)$rdata['customized'];
-        $data['synced'] = (int)$rdata['synced'];
-        $data['items'] = $rdata['items'];
         $data['ctime'] = date('Y-m-d H:i:s', (int)$rdata['ctime']); // datetime
-        $data['mtime'] = date('Y-m-d H:i:s', (int)$rdata['mtime']); // datetime
-        $data['operator_id'] = (int)$rdata['operator'];
-        $data['label'] = $rdata['label'];
-        $data['hash'] = $rdata['hash'];
+        $data['status'] = (int)$rdata['status'];
+        $data['group_id'] = (int)$rdata['customer'];
+        $data['vendor_id'] = (int)$rdata['vendor'];
+        $data['items'] = $rdata['items'];
 
         $data['_extra'] = J(array_diff_key($rdata, $data));
 
