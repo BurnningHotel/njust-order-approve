@@ -13,7 +13,6 @@ namespace Gini\ORM;
 class Request extends Object
 {
     public $voucher = 'string:120'; // 关联的订单voucher
-    public $order = 'object:order'; // 关联的订单
     public $status = 'int,default:0'; // 申请单的当前状态
     public $ctime = 'datetime'; // 创建时间
     public $log = 'array'; // 管理操作日志

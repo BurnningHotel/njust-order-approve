@@ -57,6 +57,10 @@ class Request extends \Gini\Controller\CGI
             $params[':voucher'] = $params[':querystring'] = $querystring;
         }
         $requests = those('request')->query($sql, null, $params);
+
+        foreach ($requests as &$request) {
+            $request->order = a('order', $request->voucher);
+        }
         return $requests;
     }
 
