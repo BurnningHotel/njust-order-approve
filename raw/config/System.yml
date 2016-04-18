@@ -6,5 +6,6 @@ postmaster:
 rurl_mod:
   js:
     query: '_v=$(VERSION)'
+
 ...
 
