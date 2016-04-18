@@ -21,37 +21,38 @@ class Request extends \Gini\Controller\CGI
             return;
         }
         list($pendingStatus, $finishedStatus) = self::_getListStatus($group->id);
-        if ($type=='pending') {
-            return $this->_morePending($start, $pendingStatus);
-        }
-        return $this->_moreDone($start, $finishedStatus);
-    }
-
-    private function _morePending($start, $pendingStatus)
-    {
-        $perpage = 25;
         $start = (int) max($start, 0);
         $form = $this->form();
         $q = $form['q'];
-        if ($q) {
+        if ($type=='pending') {
+            $requests = self::_getMoreRequest($start, $pendingStatus, $q);
+        }
+        else {
+            $requests = self::_getMoreRequest($start, $finishedStatus, $q);
+        }
+
+        // show in view;
+    }
+
+    private static function _getMoreRequest($start, $status, $querystring=null)
+    {
+        $perpage = 25;
+        if ($querystring) {
             $sql = "SELECT id FROM request WHERE status=:status LIMIT {$start}, {$limit}";
             $params = [
-                ':status'=> \Gini\ORM\Request::STATUS_PENDING
+                ':status'=> implode(',', $status)
             ];
         }
         else {
             $sql = "SELECT id FROM request WHERE status=:status AND (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring)) LIMIT {$start}, {$limit}";
             $params = [
-                ':status'=> \Gini\ORM\Request::STATUS_PENDING,
-                ':voucher'=> $q,
-                ':querystring'=> $q,
+                ':status'=> implode(',', $status),
+                ':voucher'=> $querystring,
+                ':querystring'=> $querystring,
             ];
         }
         $requests = those('request')->query($sql);
-    }
-
-    private function _moreDone($start, $finishedStatus)
-    {
+        return $requests;
     }
 
     private static function _getListStatus($groupID)
