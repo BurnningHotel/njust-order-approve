@@ -71,7 +71,7 @@ class Order extends Hub\RObject
         $data['status'] = (int)$rdata['status'];
         $data['group_id'] = (int)$rdata['customer'];
         $data['vendor_id'] = (int)$rdata['vendor'];
-        $data['items'] = $rdata['items'];
+        $data['items'] = json_encode($rdata['items']);
 
         $data['_extra'] = J(array_diff_key($rdata, $data));
 

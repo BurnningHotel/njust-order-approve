@@ -11,9 +11,20 @@ if (count($requests)) foreach ($requests as $vRequest) {?>
     <ul class="list-unstyled ul-list clearfix">
         <li style="font-size:11px;"><?=H($vRequest->order->ctime)?></li>
         <li><?=H($vRequest->order->voucher)?></li>
-        <li><?=J($vRequest->order->items)?></li>
-        <li><?=H($vRequest->order->group->name)?></li>
-        <li><?=H($vRequest->order->vendor->name)?></li>
+        <li>
+        <?php 
+        $vItems = (array)$vRequest->order->items;
+        $tmpI = 1;
+        foreach ((array)$vItems as $vPID=>$vPData) {?>
+            <?php if ($tmpI++>3) { ?>
+            <div>...</div>
+            <?php } else { ?>
+            <div title="<?=H($vPData['name'])?>"><?=H($vPData['name'])?></div>
+            <?php }?>
+        <?php }?>
+        </li>
+        <li title="<?=H($vRequest->order->group->title)?>"><?=H($vRequest->order->group->title)?></li>
+        <li title="<?=H($vRequest->order->vendor->name)?>"><?=H($vRequest->order->vendor->name)?></li>
         <li><?=H(money_format('%.2n', $vRequest->order->price))?></li>
         <li><?=H(\Gini\ORM\Request::$status_titles[$vRequest->status])?></li>
     </ul>
