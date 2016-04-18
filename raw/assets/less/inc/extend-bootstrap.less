@@ -1,0 +1,320 @@
+.alert a {
+    color: @linkColor;
+}
+
+table.table {
+    > thead, > tbody, > tfoot {
+        > tr {
+            > th, > td {
+                &.text-middle {
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+    th.packed, td.packed {
+        width: 1px;
+    }
+}
+
+.text-primary {
+    color: @linkColor;
+    &:hover {
+        color: @linkHoverColor;
+    }
+}
+
+.text-delete{
+    text-decoration:line-through;
+    &:hover{
+        text-decoration:line-through;
+    }
+}
+
+.btn {
+    border-width: 0 0 2px;
+}
+
+.btn-default {
+    background-color: #eee;
+}
+
+/*btn-primary bootbox.js会找到并focus，所以定义btn-normal*/
+.btn-primary, .label-primary, .btn-normal {
+    background-color: #00B1AE;
+    border-color: #00908d;
+    color: #fff;
+
+    &:hover, &:visited, &:focus, &.active, &[disabled], &.disabled {
+        background-color: darken(#00B1AE, 6.5%);
+        border-color: darken(#00908d, 6.5%);
+        color: #fff;
+    }
+}
+
+.btn-danger, .label-danger {
+    border-color: #a73642;
+}
+
+.panel {
+    border-width: 0 0 2px 0;
+    box-shadow: none;
+
+    &.panel-primary {
+        border-color: #ddd;
+
+        .panel-heading {
+            background-color: #eb5767;
+            border-color: #eb5767;
+        }
+    }
+
+    .panel {
+        border-width: 1px;
+
+        &.panel-filtering {
+            border-color: #eb5767;
+            border-radius: 0;
+
+            .panel-heading {
+                background-color: #eb5767;
+                border-radius: 0;
+                color: #fff;
+                padding: 10px;
+            }
+
+            .panel-title {
+                font-size: 14px;
+                padding: 0;
+            }
+
+            .panel-body {
+                padding: 10px 20px;
+
+                td a {
+                    padding: 0 5px;
+                }
+            }
+        }
+
+    }
+
+    .search-bar {
+
+        .search-bar-input {
+            .form-control {
+                border-color: @headerActiveBackgroundColor;
+            }
+        }
+
+        .btn-nav {
+            border-radius:4px 4px 0px 0px;
+            padding: 3px 20px 0;
+            background-color: #edeef4;
+            color: @linkColor;
+
+            &.active {
+                background-color: @headerActiveBackgroundColor;
+                color: #fff;
+                box-shadow: none;
+            }
+
+        }
+
+        .input-search {
+            border-radius: 0 4px 4px;
+        }
+
+    }
+
+    .search-criteria {
+
+        > .well {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: normal;
+        }
+
+        .btn {
+            border-width: 1px;
+        }
+
+        .btn-activity-results {
+            color: #eb5767;
+        }
+
+        a.btn-criteria {
+            white-space: nowrap;
+
+            &:hover {
+                background-color: @headerHoverBackgroundColor;
+                color: @headerHoverColor;
+                text-decoration: none;
+            }
+        }
+
+        .btn-default {
+            background-color: #fff;
+
+            &.active {
+                background-color: #d55;
+                border-color: #a73642;
+                color: #fff;
+            }
+        }
+
+        a.btn-more-options {
+            text-decoration: none;
+        }
+
+    }
+
+}
+
+.modal-footer {
+    margin-top: 0px;
+    padding: 9px 10px 10px;
+}
+
+.input-group-unity {
+
+    position: relative;
+    display: block;
+    overflow:auto;
+
+    .form-control {
+        z-index: 0;
+    }
+
+    .form-control {
+        padding-left: 35px;
+    }
+    .form-control:last-child {
+        padding-left: 35px;
+        border-radius: 4px;
+    }
+
+    .input-group-addon {
+        position:absolute;
+        left:0;
+        top:4px;
+        z-index: 1;
+        border-width: 0;
+        background-color: transparent;
+    }
+
+    .input-group-btn {
+        position:absolute;
+        left:0;
+        top:0;
+        display:block;
+        width:auto;
+
+        .btn {
+            background-color: transparent;
+            border-width: 0;
+            color: #ccc;
+        }
+    }
+
+}
+
+.input-group-unity-right {
+
+    .form-control {
+        padding-left: 12px;
+        padding-right: 35px;
+    }
+
+    .form-control:last-child {
+        padding-left: 35px;
+        border-radius: 4px;
+    }
+
+    .input-group-addon {
+        left: auto;
+        right:0;
+    }
+
+    .input-group-btn {
+        left: auto;
+        right:0;
+    }
+
+}
+
+.form-control:focus {
+    border-color: @focusColor;
+}
+
+ul.nav-tabs {
+    background-color: #eee;
+
+    > li.active > a {
+        margin-top: -2px;
+        border-top-width: 3px;
+        border-top-color: #eb5767;
+
+        &:hover {
+            margin-top: -2px;
+            border-top-width: 3px;
+            border-top-color: #d55;
+        }
+
+    }
+
+}
+
+.dropdown-submenu {
+    position:relative;
+
+    > .dropdown-menu {
+        top:0;
+        left:100%;
+        margin-top:-6px;
+        margin-left:-1px;
+        border-radius:0 6px 6px 6px;
+    }
+
+    > a:after {
+        display:block;
+        content:" ";
+        float:right;
+        width:0;
+        height:0;
+        border-color:transparent;
+        border-style:solid;
+        border-width:5px 0 5px 5px;
+        border-left-color:#cccccc;
+        margin-top:5px;
+        margin-right:-10px;
+    }
+
+    &:hover > a:after {
+        border-left-color:#ffffff;
+    }
+
+    &.pull-left {
+        float: none;
+
+        >.dropdown-menu {
+            left:-100%;
+            margin-left:10px;
+            border-radius:6px 0 6px 6px;
+        }
+    }
+
+}
+
+.popover {
+    background: #fff;
+}
+.popover.bottom .arrow:after {
+    border-bottom-color: #fff;
+}
+.popover-content {
+    min-width: 200px;
+}
+
