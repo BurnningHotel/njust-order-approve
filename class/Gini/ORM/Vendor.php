@@ -2,7 +2,7 @@
 
 namespace Gini\ORM;
 
-class Vendor extends Mall\RObject
+class Vendor extends Hub\RObject
 {
     public $name         = 'string:120';
     public $abbr         = 'string:120';
