@@ -54,10 +54,11 @@ abstract class RObject extends \Gini\ORM\Object
     public function fetch($force = false)
     {
         if ($force || $this->_db_time == 0) {
-            if (is_array($this->_criteria) && count($this->_criteria) > 0) {
-                $criteria = $this->normalizeCriteria($this->_criteria);
+            $criteria = $this->criteria();
+            if (count($criteria) > 0) {
+                $criteria = $this->normalizeCriteria($criteria);
 
-                $id = $criteria['id'] ?: null;
+                $id = $criteria['id'] ?: md5(J($criteria));
                 if ($id) {
                     $key = $this->name().'#'.$id;
                     $cacher = \Gini\Cache::of('orm');
@@ -66,7 +67,7 @@ abstract class RObject extends \Gini\ORM\Object
                         \Gini\Logger::of('orm')->debug("cache hits on {key}", ['key'=>$key]);
                     } else {
                         \Gini\Logger::of('orm')->debug("cache missed on {key}", ['key'=>$key]);
-                        $rdata = $this->fetchRPC($id);
+                        $rdata = $this->fetchRPC($criteria);
                         if (is_array($rdata) && count($rdata) > 0) {
                             $data = $this->convertRPCData($rdata);
                             // set ttl to cacheTimeout sec
@@ -76,7 +77,7 @@ abstract class RObject extends \Gini\ORM\Object
 
                     // 确认数据有效再进行id赋值
                     if (is_array($data) && count($data) > 0) {
-                        $data['id'] = $id;
+                        $data['id'] = (int)$data['id'] ?: (int)$criteria['id'];
                     }
                 }
             }
