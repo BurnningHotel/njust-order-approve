@@ -1,0 +1,11 @@
+---
+locale: zh_CN
+postmaster:
+  email: sender@geneegroup.com
+  name: 管理平台
+rurl_mod:
+  js:
+    query: '_v=$(VERSION)'
+
+...
+

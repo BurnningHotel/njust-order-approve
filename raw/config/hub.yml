@@ -1,0 +1,11 @@
+---
+# rpc:
+#   product: 
+#     url: HUB-PRODUCT-RPC-URL
+#   order: 
+#     url: HUB-ORDER-RPC-URL # 需要hub-orders根据client_id 指定node
+# clint:
+#   id: CLIENT-ID
+#   secret: CLIENT-SECRET
+#
+...
