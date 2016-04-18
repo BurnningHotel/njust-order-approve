@@ -1,9 +1,0 @@
----
-rpc:
-    url: http://gapper.in/api
-    client_id: CLINETID
-    client_secret: CLIENTSECRET
-
-server_home: http://gapper.in/
-
-...
