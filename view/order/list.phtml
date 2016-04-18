@@ -7,7 +7,7 @@ $vTxtTitle = [
     'bio_reagent'=> T('生物试剂'),
     'consumable'=> T('耗材'),
 ];
-foreach ((array)$requests as $vRequest) {?>
+if (count($requests)) foreach ($requests as $vRequest) {?>
     <ul class="list-unstyled ul-list clearfix">
         <li style="font-size:11px;"><?=H($vRequest->order->ctime)?></li>
         <li><?=H($vRequest->order->voucher)?></li>

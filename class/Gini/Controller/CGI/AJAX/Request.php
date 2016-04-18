@@ -39,19 +39,21 @@ class Request extends \Gini\Controller\CGI
     private static function _getMoreRequest($start, $status, $querystring=null)
     {
         $limit = 25;
-        if ($querystring) {
-            $sql = "SELECT id FROM request WHERE status=:status LIMIT {$start}, {$limit}";
-            $params = [
-                ':status'=> implode(',', $status)
-            ];
+        $params = [];
+        if (empty($status)) {
+            $sql = "SELECT id FROM request";
         }
         else {
-            $sql = "SELECT id FROM request WHERE status=:status AND (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring)) LIMIT {$start}, {$limit}";
-            $params = [
-                ':status'=> implode(',', $status),
-                ':voucher'=> $querystring,
-                ':querystring'=> $querystring,
-            ];
+            $sql = "SELECT id FROM request WHERE status in (:status)";
+            $params[':status'] = implode(',', $status);  
+        }
+        if ($querystring) {
+            $sql = "{$sql} LIMIT {$start}, {$limit}";
+        }
+        else {
+            $cond = empty($status) ? 'WHERE' : 'AND';
+            $sql = "{$sql} {$cond} (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring)) LIMIT {$start}, {$limit}";
+            $params[':voucher'] = $params[':querystring'] = $querystring;
         }
         $requests = those('request')->query($sql);
         return $requests;
