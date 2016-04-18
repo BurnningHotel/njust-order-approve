@@ -103,8 +103,8 @@ class Order extends Hub\RObject
         $data['customized'] = (int)$rdata['customized'];
         $data['synced'] = (int)$rdata['synced'];
         $data['items'] = $rdata['items'];
-        $data['ctime'] = $rdata['ctime']; // datetime
-        $data['mtime'] = $rdata['mtime']; // datetime
+        $data['ctime'] = date('Y-m-d H:i:s', (int)$rdata['ctime']); // datetime
+        $data['mtime'] = date('Y-m-d H:i:s', (int)$rdata['mtime']); // datetime
         $data['operator_id'] = (int)$rdata['operator'];
         $data['label'] = $rdata['label'];
         $data['hash'] = $rdata['hash'];

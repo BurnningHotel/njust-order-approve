@@ -1,9 +1,14 @@
 ---
-# rpc:
-#   product: 
-#     url: HUB-PRODUCT-RPC-URL
-#   order: 
-#     url: HUB-ORDER-RPC-URL # 需要hub-orders根据client_id 指定node
+rpc:
+  node:
+    url: http://node.hub.labmai.com/api
+  vendor:
+    url: http://vendor.hub.labmai.com/api
+  product:
+    url: http://product.hub.labmai.com/api
+  order:
+    url: http://order.hub.labmai.com/api
+
 # clint:
 #   id: CLIENT-ID
 #   secret: CLIENT-SECRET
