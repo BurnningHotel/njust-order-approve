@@ -9,9 +9,9 @@ class Index extends Layout\Common
         return $this->redirect('home');
     }
 
-    public function actionHome()
+    public function actionOrder()
     {
-        $this->view->body = V('home');
+        $this->view->body = V('order');
     }
 
     public function actionLogout()
