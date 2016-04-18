@@ -38,7 +38,7 @@ class Request extends \Gini\Controller\CGI
 
     private static function _getMoreRequest($start, $status, $querystring=null)
     {
-        $perpage = 25;
+        $limit = 25;
         if ($querystring) {
             $sql = "SELECT id FROM request WHERE status=:status LIMIT {$start}, {$limit}";
             $params = [
