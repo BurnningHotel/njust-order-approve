@@ -1,7 +1,7 @@
 ---
 default:
-  dsn: mysql:dbname=DATABASE;host=HOST
-  username: USERNAME
-  password: PASSWORD
+  dsn: mysql:dbname=njust_order_approve;host=pihizi-qa-mysql.docker.local
+  username: genee
+  password: 83719730
 
 ...

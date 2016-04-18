@@ -18,7 +18,7 @@
 
 .board-header {
     background: @siteBoardHeaderBg;
-    height: $siteBoardHeaderHeight;
+    height: @siteBoardHeaderHeight;
     padding: 0 20px;
     &-ul {
         margin: 0;
@@ -50,49 +50,32 @@
     margin-right: -20px;
 }
 
-.board-content-order {
-    background-color: #edf2f8;
-    .block-order {
-        background: #fff;
-        padding: 20px;
-        margin-bottom: 20px;
-        &-header {
-            line-height: 1.75em;
-        }
-        &-right {
-            border-left:2px solid  #D2DFEA;
-            min-height:180px
-        }
-        &-body {
-            margin-top: 7px;
-            border-top: 2px solid #edf2f8;
-        }
-        .ul-order-list {
-            height: 3em;
-            line-height: 3em;
-            border-bottom: 1px solid @siteBlockOrderBorderColor;
-            margin: 0;
-            white-space: nowrap;
-            padding-right: 20px;
-            width: 100%;
-            li {
-                display: inline-block;
-                width: 25%;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            li:first-child {
-                width: 234px;
-            }
-            &:last-child {
-                border-bottom: 0;
-            }
-        }
-        &-more-handler {
-            cursor: pointer;
-            line-height: 3em;
-            height: 3em;
+.board-content {
+    &-header {
+        height: 3em;
+        line-height: 3em;
+        border-bottom: 2px solid @siteBlockOrderBorderColor;
+        white-space: nowrap;
+        width: 100%;
+    }
+    .ul-list {
+        white-space: nowrap;
+        li {
+            display: inline-block;
             overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 12.5%;
+        }
+    }
+    &-body {
+        .ul-list {
+            border-bottom: 1px dashed @siteBlockOrderBorderColor;
+            li {
+                line-height: 2.5em;
+                height: 2.5em;
+                vertical-align: middle;
+            }
         }
     }
     .product-type {
