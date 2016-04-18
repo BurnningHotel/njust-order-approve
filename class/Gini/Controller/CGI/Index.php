@@ -11,7 +11,10 @@ class Index extends Layout\Common
 
     public function actionOrder()
     {
-        $this->view->body = V('order');
+        $vars = [
+            'list'=> (string)\Gini\CGI::request('ajax/request/more')->execute()->content()
+        ];
+        $this->view->body = V('order', $vars);
     }
 
     public function actionLogout()

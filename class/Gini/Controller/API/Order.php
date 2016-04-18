@@ -91,6 +91,7 @@ class Order extends \Gini\Controller\API
         }
 
         $request->voucher = $voucher;
+        $request->order = $request->order->id ? $request->order : a('order', ['voucher'=> $voucher]);
         $request->status = \Gini\ORM\Request::STATUS_PENDING;
         $request->ctime = $request->ctime ?: date('Y-m-d H:i:s');
         $request->product_name = implode(',', array_unique($pNames));

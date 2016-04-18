@@ -1,0 +1,21 @@
+<?php
+$vTxtTitle = [
+    'chem_reagent'=> T('普通化学品'),
+    'hazardous'=> T('危险品'),
+    'drug_precursor'=> T('易制毒'),
+    'highly_toxic'=> T('剧毒品'),
+    'bio_reagent'=> T('生物试剂'),
+    'consumable'=> T('耗材'),
+];
+foreach ((array)$requests as $vRequest) {?>
+    <ul class="list-unstyled ul-list clearfix">
+        <li style="font-size:11px;"><?=H($vRequest->order->ctime)?></li>
+        <li><?=H($vRequest->order->voucher)?></li>
+        <li><?=H($vRequest->order->items)?></li>
+        <li><?=H($vRequest->order->requester->name)?></li>
+        <li><?=H($vRequest->order->vendor->name)?></li>
+        <li><?=H(money_format('%.2n', $vRequest->Order->price))?></li>
+        <li><?=H(\Gini\ORM\Request::$status_titles[$vRequest->status])?></li>
+    </ul>
+<?php }?>
+

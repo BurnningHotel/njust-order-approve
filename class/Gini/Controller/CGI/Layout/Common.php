@@ -9,6 +9,7 @@ abstract class Common extends \Gini\Controller\CGI\Layout
 
     public function __preAction($action, &$params)
     {
+        /*
         // 对于已经登录但是没有选组的用户, 需要强制去选择组
         if (\Gini\Gapper\Client::getLoginStep() !== \Gini\Gapper\Client::STEP_DONE) {
             return \Gini\Gapper\Client::goLogin();
@@ -19,6 +20,7 @@ abstract class Common extends \Gini\Controller\CGI\Layout
             \Gini\Gapper\Client::logout();
             return \Gini\Gapper\Client::goLogin();
         }
+         */
 
         return parent::__preAction($action, $params);
     }

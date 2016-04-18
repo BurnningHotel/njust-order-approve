@@ -31,7 +31,14 @@ class Request extends \Gini\Controller\CGI
             $requests = self::_getMoreRequest($start, $finishedStatus, $q);
         }
 
-        // show in view;
+        foreach ($requests as &$request)
+        {
+            $request->order = a('order', $request->voucher);
+        }
+
+        return \Gini\IoC::construct('\Gini\CGI\Response\HTML', V('order/list', [
+            'requests'=> $requests
+        ]));
     }
 
     private static function _getMoreRequest($start, $status, $querystring=null)
