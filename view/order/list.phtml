@@ -8,8 +8,8 @@ $vTxtTitle = [
     'consumable'=> T('耗材'),
 ];
 if (count($requests)) foreach ($requests as $vRequest) {?>
-    <ul class="list-unstyled ul-list clearfix">
-        <li style="font-size:11px;"><?=H($vRequest->order->ctime)?></li>
+    <ul class="list-unstyled ul-list clearfix row">
+        <li style="font-size:11px;line-height:3.2em"><?=H($vRequest->order->ctime)?></li>
         <li><?=H($vRequest->order->voucher)?></li>
         <li>
         <?php 
@@ -29,7 +29,7 @@ if (count($requests)) foreach ($requests as $vRequest) {?>
         <li><?=H(\Gini\ORM\Request::$status_titles[$vRequest->status])?></li>
         <li>
             <?php foreach ($operators as $vKey=>$vOp) {?>
-            <span data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
+            <span class="btn btn-link" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
             <?php }?>
         </li>
     </ul>
