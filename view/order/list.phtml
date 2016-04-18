@@ -1,37 +1,48 @@
 <?php
-$vTxtTitle = [
-    'chem_reagent'=> T('普通化学品'),
-    'hazardous'=> T('危险品'),
-    'drug_precursor'=> T('易制毒'),
-    'highly_toxic'=> T('剧毒品'),
-    'bio_reagent'=> T('生物试剂'),
-    'consumable'=> T('耗材'),
-];
-if (count($requests)) foreach ($requests as $vRequest) {?>
-    <ul class="list-unstyled ul-list clearfix row">
-        <li style="font-size:11px;line-height:3.2em"><?=H($vRequest->order->ctime)?></li>
-        <li><?=H($vRequest->order->voucher)?></li>
-        <li>
-        <?php 
-        $vItems = (array)$vRequest->order->items;
-        $tmpI = 1;
-        foreach ((array)$vItems as $vPID=>$vPData) {?>
-            <?php if ($tmpI++>3) { ?>
-            <div>...</div>
-            <?php } else { ?>
-            <div title="<?=H($vPData['name'])?>"><?=H($vPData['name'])?></div>
-            <?php }?>
-        <?php }?>
-        </li>
-        <li title="<?=H($vRequest->order->group->title)?>"><?=H($vRequest->order->group->title)?></li>
-        <li title="<?=H($vRequest->order->vendor->name)?>"><?=H($vRequest->order->vendor->name)?></li>
-        <li><?=H(money_format('%.2n', $vRequest->order->price))?></li>
-        <li><?=H(\Gini\ORM\Request::$status_titles[$vRequest->status])?></li>
-        <li>
-            <?php foreach ($operators as $vKey=>$vOp) {?>
-            <span class="btn btn-link" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
-            <?php }?>
-        </li>
+$vAllowOperate = count($operators);
+?>
+<div class="board-content-header">
+    <ul class="list-unstyled ul-list clearfix<?=$vAllowOperate ? '' : ' ul-list-noop'?>">
+        <li><?=H(T('创建时间'))?></li>
+        <li><?=H(T('订单编号'))?></li>
+        <li><?=H(T('商品'))?></li>
+        <li><?=H(T('买方'))?></li>
+        <li><?=H(T('供应商'))?></li>
+        <li><?=H(T('金额'))?></li>
+        <li><?=H(T('状态'))?></li>
+        <li>&#160;</li>
     </ul>
-<?php }?>
+</div>
+<div class="board-content-body">
+    <?php
+    if (count($requests)) foreach ($requests as $vRequest) {?>
+        <ul class="list-unstyled ul-list clearfix row<?=$vAllowOperate ? '' : ' ul-list-noop'?>">
+            <li style="font-size:11px;line-height:3.2em"><?=H($vRequest->order->ctime)?></li>
+            <li><?=H($vRequest->order->voucher)?></li>
+            <li>
+            <?php 
+            $vItems = (array)$vRequest->order->items;
+            $tmpI = 1;
+            foreach ((array)$vItems as $vPID=>$vPData) {?>
+                <?php if ($tmpI++>3) { ?>
+                <div>...</div>
+                <?php } else { ?>
+                <div title="<?=H($vPData['name'])?>"><?=H($vPData['name'])?></div>
+                <?php }?>
+            <?php }?>
+            </li>
+            <li title="<?=H($vRequest->order->group->title)?>"><?=H($vRequest->order->group->title)?></li>
+            <li title="<?=H($vRequest->order->vendor->name)?>"><?=H($vRequest->order->vendor->name)?></li>
+            <li><?=H(money_format('%.2n', $vRequest->order->price))?></li>
+            <li><?=H(\Gini\ORM\Request::$status_titles[$vRequest->status])?></li>
+            <?php if ($vAllowOperate) {?>
+            <li>
+                <?php foreach ($operators as $vKey=>$vOp) {?>
+                <span class="app-op-per-handler btn btn-link" data-id="<?=H($vRequest->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
+                <?php }?>
+            </li>
+            <?php }?>
+        </ul>
+    <?php }?>
+</div>
 

@@ -33,7 +33,7 @@ class Request extends \Gini\Controller\CGI
 
         return \Gini\IoC::construct('\Gini\CGI\Response\HTML', V('order/list', [
             'requests'=> $requests,
-            'operators'=> self::_getAllowedOperators($group->id)
+            'operators'=> $type=='pending' ? self::_getAllowedOperators($group->id) : null
         ]));
     }
 
@@ -97,6 +97,26 @@ class Request extends \Gini\Controller\CGI
         return [$pendingStatus, $new];
     }
 
+    public function actionGetOPForm()
+    {
+        $me = _G('ME');
+        $group = _G('GROUP');
+        if (!$me->id || !$group->id) {
+            return;
+        }
+        $form = $this->form();
+        $key = $form['key'];
+        $id = $form['id'];
+        $allowedOperators = self::_getAllowedOperators($group->id);
+        if (!$id || !isset($allowedOperators[$key])) return;
+        $title = $allowedOperators[$key]['title'];
+        return \Gini\IoC::construct('\Gini\CGI\Response\HTML', V('order/op-form', [
+            'id'=> $id,
+            'key'=> $key,
+            'title'=> $title
+        ]));
+    }
+
     /**
      * @brief 允许管理方单个审批、批量审批和全部审批
      *
@@ -113,9 +133,9 @@ class Request extends \Gini\Controller\CGI
         $allowedOperators = self::_getAllowedOperators($group->id);
         $form = $this->form('post');
         $key = $form['key'];
-        $vouchers = $form['vouchers'];
+        $ids = $form['ids'];
         $all = $form['all'];
-        $voucher = $form['voucher'];
+        $id = $form['id'];
         $note = $form['note'];
         if (!isset($allowedOperators[$key])) {
             return;
@@ -123,17 +143,17 @@ class Request extends \Gini\Controller\CGI
 
         if ($all) {
             return $this->_execCLI($key, $note);
-        } elseif (count($vouchers) > 1) {
-            return $this->_execCLI($key, $note, $vouchers);
-        } elseif (count($vouchers) == 1) {
-            $voucher = array_pop($vouchers);
+        } elseif (count($ids) > 1) {
+            return $this->_execCLI($key, $note, $ids);
+        } elseif (count($ids) == 1) {
+            $id = array_pop($id);
         }
 
         $operator = $allowedOperators[$key];
         $fromStatus = $operator['from_status'];
         $toStatus = $operator['to_status'];
         $bool = false;
-        if ($voucher && in_array($toStatus, [
+        if ($id && in_array($toStatus, [
             \Gini\ORM\Request::STATUS_COLLEGE_FAILED,
             \Gini\ORM\Request::STATUS_UNIVERS_FAILED,
             \Gini\ORM\Request::STATUS_UNIVERS_PASSED,
@@ -141,7 +161,7 @@ class Request extends \Gini\Controller\CGI
             $db = \Gini\Database::db();
             $db->beginTransaction();
             try {
-                $request = a('request', ['voucher' => $voucher]);
+                $request = a('request', $id);
                 if (!$request->id || $request->status != $fromStatus) {
                     throw new \Exception();
                 }
@@ -158,7 +178,7 @@ class Request extends \Gini\Controller\CGI
                 }
                 if ($request->save()) {
                     if ($toStatus == \Gini\ORM\Request::STATUS_UNIVERS_PASSED) {
-                        $bool = $rpc->mall->order->updateOrder($voucher, [
+                        $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_APPROVED,
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
@@ -167,7 +187,7 @@ class Request extends \Gini\Controller\CGI
                         \Gini\ORM\Request::STATUS_UNIVERS_FAILED,
                         \Gini\ORM\Request::STATUS_COLLEGE_FAILED,
                     ])) {
-                        $bool = $rpc->mall->order->updateOrder($voucher, [
+                        $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_CANCELED,
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
@@ -185,6 +205,7 @@ class Request extends \Gini\Controller\CGI
 
         return \Gini\IoC::construct('\Gini\CGI\Response\JSON', [
             'code' => $bool ? 0 : 1,
+            'id'=> $id, // request->id
             'message' => $bool ? T('操作成功') : T('操作失败, 请您重试'),
         ]);
     }
@@ -235,7 +256,7 @@ class Request extends \Gini\Controller\CGI
         ]);
     }
 
-    private function _execCLI($key, $note, $vouchers = null)
+    private function _execCLI($key, $note, $ids = null)
     {
         $me = _G('ME');
         $group = _G('GROUP');
@@ -253,9 +274,9 @@ class Request extends \Gini\Controller\CGI
         $giniFullName = $_SERVER['GINI_SYS_PATH'].'/bin/gini';
         $note = escapeshellarg($note);
         $key = escapeshellarg($key);
-        if (!empty($vouchers)) {
-            $vouchers = escapeshellarg(implode(',', $vouchers));
-            exec("{$giniFullName} order update {$log->id} {$key} {$vouchers} {$note} > /dev/null 2>&1 &");
+        if (!empty($ids)) {
+            $ids = escapeshellarg(implode(',', $ids));
+            exec("{$giniFullName} order update {$log->id} {$key} {$ids} {$note} > /dev/null 2>&1 &");
         } else {
             exec("{$giniFullName} order update-all {$log->id} {$key} {$note} > /dev/null 2>&1 &");
         }

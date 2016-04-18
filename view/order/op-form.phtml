@@ -1,0 +1,121 @@
+<div class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="ajax/request/post">
+                <input type="hidden" name="id" value="<?=H($id)?>"/>
+                <input type="hidden" name="key" value="<?=H($key)?>"/>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><?=H($title)?></h4>
+                </div>
+                <div class="modal-body">
+                    <textarea name="note" placeholder="<?=H(T('您可以在这里填写备注信息'))?>"></textarea>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=H(T('取消'))?></button>
+                <button type="button" class="btn btn-primary btn-save app-op-submit-handler"><?=H(T('提交'))?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+require(['jquery','bootstrap','bootbox','utils/datepicker', 'css!../css/datepicker.css'], function($, Bootstrap, bootbox){
+    var $local_modal = $('.local-modal');
+    var $modal;
+    $('.date').datepicker({
+        format: 'yyyy-mm-dd',
+    });
+    $(".local-modal").css({'overflow-x': 'hidden', 'overflow-y': 'auto'});
+
+    $('body').on('change', '.grant-select', function() {
+        var grantKey = $(this).val();
+        var $container = $(this).parents('form').find('.grant-item');
+        $container.html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-2x"></i></div>');
+        $.get(['ajax/payment/changeGrant', grantKey].join('/'), function(data) {
+            $container.html(data);
+        });
+    });
+
+    $('input:radio[name="option"]').on('change', function(event) {
+        var val = $(this).val();
+        if (val == 'create') {
+            $('.create_zone').show();
+            $('.select_zone').hide();
+        }
+        else if (val == 'select') {
+            $('.select_zone').show();
+            $('.create_zone').hide();
+        }
+    });
+
+    var getForm = function(id, method, callback) {
+        $.post('ajax/payment/statement/get-local-dialog', {
+            id: id
+            ,method: method
+        }, function(data) {
+            if ($modal) return callback();
+            $modal = $(data.modal);
+            $('body').append($modal);
+            $modal.on('click', '.btn-refresh', function() {
+                window.location.reload();
+            });
+            $modal.on('show.bs.modal', reset);
+            callback();
+        });
+    };
+
+    var reset = function() {};
+
+    var show = function() {
+        $modal.modal({
+            backdrop: 'static'
+            ,keyboard: false
+        }).show();
+    };
+
+    $.get('ajax/payment/statement/get-status', function(data) {
+        if (data === true) {
+            warnText = false;
+        }
+        else if (data) {
+            warnText = data;
+        }
+    });
+
+
+
+    function showResponse(response) {
+        if (response) {
+            if (response.modal) {
+                $local_modal.remove();
+                var $modal = $(response.modal);
+                $('body').append($modal);
+                $modal.modal({
+                    backdrop: 'static'
+                    ,keyboard: false
+                }).show();
+                return false;
+            }
+        }
+        else {
+            window.location.reload();
+        }
+    }
+
+    $('.btn-save').on('click', function(event) {
+        var form = $('#payment-local-form');
+        var formdata = new FormData(form[0]);
+        var formAction = form.data('action');
+        $.ajax({
+            url: formAction,
+            type: 'POST',
+            data: form.serialize(),
+        })
+        .done(function(data) {
+            showResponse(data);
+        });
+    });
+});
+</script>
+

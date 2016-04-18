@@ -8,7 +8,7 @@ class Order extends \Gini\Controller\CLI
     {
         echo "Available commands:\n";
         echo "  gini order update-all LOGID KEY NOTE\n";
-        echo "  gini order update LOGID KEY VOUCHER,VOUCHER.. NOTE\n";
+        echo "  gini order update LOGID KEY id,id.. NOTE\n";
     }
 
     public function actionUpdateAll($argv)
@@ -85,10 +85,10 @@ class Order extends \Gini\Controller\CLI
     public function actionUpdate($argv)
     {
         // TODO
-        return
+        return;
         if (count($argv)!=4) return;
         $pid = getmypid();
-        list($logID, $key, $vouchers, $note) = $argv;
+        list($logID, $key, $ids, $note) = $argv;
 
         $log = a('clilog', $logID);
         if ($log->id) return;
@@ -97,8 +97,8 @@ class Order extends \Gini\Controller\CLI
         $log->save();
 
         try {
-            $vouchers = explode(',', $vouchers);
-            if (empty($vouchers)) throw new \Exception();
+            $ids = explode(',', $ids);
+            if (empty($ids)) throw new \Exception();
             $allowedOperators = \Gini\Config::get('order.operator');
             $keys = array_keys($allowedOperators);
             if (!in_array($key, $keys)) throw new \Exception();
@@ -113,12 +113,12 @@ class Order extends \Gini\Controller\CLI
                 'review_status'=> $operator['review_status']
             ];
 
-            $log->total = count($vouchers);
+            $log->total = count($ids);
             $log->save();
 
             $i = 0;
-            foreach ($vouchers as $voucher) {
-                $order = a('order', ['voucher'=> $voucher]);
+            foreach ($ids as $id) {
+                $order = a('order', ['voucher'=> a('request', $id)->voucher]);
                 $bool = false;
                 if ($order->id) {
                     $bool = $order->save($to);
