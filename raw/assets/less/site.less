@@ -12,13 +12,13 @@
 /* layout */
 @import "inc/layout"; 
 
-@siteBoardHeaderBg: #cddbe8;
+@siteBoardHeaderBg: #fff;
 @siteBoardHeaderHeight: 60px;
-@siteBlockInventoryBorderColor: #cddbe8;
 @siteBlockOrderBorderColor: #cddbe8;
 
 .board-header {
     background: @siteBoardHeaderBg;
+    height: $siteBoardHeaderHeight;
     padding: 0 20px;
     &-ul {
         margin: 0;
@@ -50,7 +50,7 @@
     margin-right: -20px;
 }
 
-.inventory-type {
+.order-type {
     display: inline-block;
     color :#fff;
     border-radius: 3px;
@@ -67,7 +67,7 @@
     }
 }
 
-.board-content-inventory {
+.board-content-order {
     background-color: #edf2f8;
 
     /* .board-content-title */
@@ -75,7 +75,7 @@
         background: #fff;
         padding: 20px;
         margin-bottom: 2px;
-        .ul-inventory-list {
+        .ul-order-list {
             margin: 0;
             white-space: nowrap;
             padding-right: 20px;
@@ -92,14 +92,14 @@
     }
     /* .board-content-body */
     &-body {
-        .block-inventory {
+        .block-order {
             padding: 20px;
             background: #fff;
             margin-bottom: 20px;
-            .ul-inventory-list {
+            .ul-order-list {
                 height: 3em;
                 line-height: 3em;
-                border-bottom: 1px solid @siteBlockInventoryBorderColor;
+                border-bottom: 1px solid @siteBlockOrderBorderColor;
                 margin: 0;
                 white-space: nowrap;
                 padding-right: 20px;
