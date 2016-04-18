@@ -1,3 +1,20 @@
 <div class="board-header clearfix" data-require="page/order">
-<?php var_dump($order->voucher)?>
+订单#<?=$order->voucher?> <?=\Gini\ORM\Order::$status_title[$order->status]?>
+<?=$order->vendor->name?>
+<?=$order->group->title?> <?=$order->user->name?>
+<?=$order->address?> <?=$order->postcode?>
+<?=$order->phone?> <?=$order->email?>
+<?php foreach ($order->items as $vItem) { ?>
+    <?=$vItem['name']?>
+    <?=$vItem['manufacturer']?>
+    <?=$vItem['catalog_no']?>
+    <?=$vItem['package']?>
+    <?=round($vItem['unit_price'], 2)?>
+    <?=$vItem['quantity']?>
+    <?=round($vItem['unit_price'] * $vItem['quantity'], 2)?>
+<?php }?>
+<?=$order->price?>
+<?php foreach ($operators as $vKey=>$vOp) {?>
+<span class="app-op-per-handler btn btn-link" data-id="<?=H($request->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
+<?php }?>
 </div>

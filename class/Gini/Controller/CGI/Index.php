@@ -19,11 +19,13 @@ class Index extends Layout\Common
 
     public function actionOrderInfo($requestID)
     {
+        $group = _G('GROUP');
         $request = a('request', $requestID);
         $order = a('order', $request->voucher);
         $this->view->body = V('order/info', [
             'request'=> $request,
-            'order'=> $order
+            'order'=> $order,
+            'operators'=> self::_getAllowedOperators($group->id)
         ]);
     }
 
@@ -32,5 +34,26 @@ class Index extends Layout\Common
         \Gini\Gapper\Client::logout();
         $this->redirect('/');
     }
+
+    private static function _getAllowedOperators($groupID)
+    {
+        $result = [];
+        if (!$groupID) {
+            return $result;
+        }
+        $allowedOperators = (array) \Gini\Config::get('njust.group');
+        if (!isset($allowedOperators[$groupID])) {
+            return $result;
+        }
+        $operators = (array) \Gini\Config::get('njust.operators');
+        foreach ((array) $allowedOperators[$groupID]['operators'] as $key) {
+            if (isset($operators[$key])) {
+                $result[$key] = $operators[$key];
+            }
+        }
+
+        return $result;
+    }
+
 }
 
