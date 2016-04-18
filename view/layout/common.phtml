@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <?php /*360浏览器的极速模式*/ ?>
+    <meta name="renderer" content="webkit">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="gini-locale" content="<?=H(\Gini\Config::get('system.locale'))?>"/>
+    <title><?= \Gini\Config::get('page.title') ?: \Gini\Config::get('app.title') ?></title>
+    <base href="<?= H(URL('/')) ?>">
+    <?= V('layout/head-css') ?>
+    <?= V('layout/head-js') ?>
+    <link rel="shortcut icon" href="assets/icon/favicon.png">
+</head>
+<body class="<?= $layout_class ?>" data-require="board">
+    <div id="header">
+        <?= $header ?>
+    </div>
+    <div id="body" class="clearfix gini-layout-width">
+        <div id="sidebar">
+            <?= $sidebar ?>
+        </div>
+        <div id="board">
+            <?= $body ?>
+            <?= $back_to_top ?>
+        </div>
+    </div>
+</body>
+</html>

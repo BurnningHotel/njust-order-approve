@@ -1,0 +1,51 @@
+<div id="back-to-top">
+    <a class="btn btn-default btn-lg"><i class="fa fa-fw fa-chevron-up"></i></a>
+</div>
+<script data-ajax="true">
+require(['jquery'], function($){
+
+    var $button = $('#back-to-top');
+    
+    // $button.css({left: $button.parent().offset().left + $button.parent().outerWidth() - $('#sidebar').outerWidth()});
+
+    var _disableScrollMonitor = false;
+    var timeout = null;    
+    $(window).on('scroll', function() {
+        if (timeout !== null) {
+            clearTimeout(timeout);
+            timeout = null;
+        }
+
+        if (_disableScrollMonitor) return;
+
+        timeout = setTimeout(function() {
+            var scrollTop = ($('body').scrollTop() || $('html').scrollTop());
+            if (scrollTop > $(window).height()) {
+                if ($button.is(':visible')) return;
+                $button.show();
+            }
+            else {
+                if (!$button.is(':visible')) return;
+                $button.hide();
+            }  
+        }, 300);
+
+    });
+
+    $button
+    .on('click', function() {
+
+        _disableScrollMonitor = true;
+        $button.hide();
+        
+        $('body,html').stop(true, true)
+        .animate({'scrollTop':0}, function() {
+            _disableScrollMonitor = false;
+        });
+    
+        return false; 
+    });
+
+
+});
+</script>
