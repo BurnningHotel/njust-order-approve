@@ -8,8 +8,9 @@ class Order extends Hub\RObject
     public $price = 'double';
     public $ctime = 'datetime';
     public $status = 'int';
-    public $group = 'object:group';
+    public $group = 'object:group'; // 所属组
     public $vendor = 'object:vendor';
+    public $user = 'object:user'; // 组负责人
     public $items = 'array';
 
     const STATUS_NEED_VENDOR_APPROVE = 0;
@@ -71,6 +72,7 @@ class Order extends Hub\RObject
         $data['status'] = (int)$rdata['status'];
         $data['group_id'] = (int)$rdata['customer'];
         $data['vendor_id'] = (int)$rdata['vendor'];
+        $data['user_id'] = (int)$rdata['customer_owner'];
         $data['items'] = json_encode($rdata['items']);
 
         $data['_extra'] = J(array_diff_key($rdata, $data));
