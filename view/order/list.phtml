@@ -10,7 +10,9 @@ $vAllowOperate = count($operators);
         <li><?=H(T('供应商'))?></li>
         <li><?=H(T('金额'))?></li>
         <li><?=H(T('状态'))?></li>
+        <?php if ($vAllowOperate) {?>
         <li>&#160;</li>
+        <?php }?>
     </ul>
 </div>
 <div class="board-content-body">
