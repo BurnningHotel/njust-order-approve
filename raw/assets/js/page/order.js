@@ -38,6 +38,20 @@ define('page/order', ['jquery', 'utils/bootbox'], function(jQuery, Bootbox) {
 		});
 		return false;
 	});
+	$(document).on('click', '.app-pager-li-handler', function() {
+		var page = $(this).attr('data-page');
+		var type = $(this).attr('data-type');
+		var $searchHandler = $('.app-q-search-handler');
+		var q = '';
+		if ($searchHandler.length) {
+			q = $searchHandler.parents('form').find('[name=q]').val();
+		}
+		var url = ['ajax/request/more', page, type].join('/');
+		search({
+			url: url
+			,q: q
+		});
+	});
 
 	function search(params) {
 		$.get(params.url, params, function(html) {
