@@ -52,8 +52,8 @@ $vAllowOperate = count($operators);
 <?php 
     $vPFrom = (ceil($page/10) - 1) * 10 + 1;
     $vPTo = min(ceil($page/10) * 10 +1, $total);
-    if ($vPT - $vPFrom < 10) {
-        $vPFrom = max(1, $vPTo - 10);
+    if ($vPT - $vPFrom < 11) {
+        $vPFrom = max(1, $vPTo - 11);
     }
 ?>
 <?php if ($vPFrom!=1) {?>
