@@ -31,6 +31,10 @@ class Request extends \Gini\Controller\CGI
             list($total, $requests) = self::_getMoreRequest($page, $finishedStatus, $q);
         }
 
+        if (!count($requests)) {
+            return \Gini\IoC::construct('\Gini\CGI\Response\HTML', V('order/list-none'));
+        }
+
         return \Gini\IoC::construct('\Gini\CGI\Response\HTML', V('order/list', [
             'requests'=> $requests,
             'operators'=> $type=='pending' ? self::_getAllowedOperators($group->id) : null,
