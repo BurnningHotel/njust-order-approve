@@ -43,14 +43,14 @@
 
     <div class="board-info-block">
         <div class="board-info-block-title"><?=H(T('商品清单'))?></div>
-        <div class="row">
+        <div class="row" style="background:#f0f4f7;">
             <div class="col-sm-3"><?=H(T('商品'))?></div>
             <div class="col-sm-2"><?=H(T('生产商'))?></div>
             <div class="col-sm-2"><?=H(T('货号'))?></div>
             <div class="col-sm-2"><?=H(T('包装'))?></div>
-            <div class="col-sm-1"><?=H(T('单价'))?></div>
+            <div class="col-sm-1 text-right"><?=H(T('单价'))?></div>
             <div class="col-sm-1"><?=H(T('数量'))?></div>
-            <div class="col-sm-1"><?=H(T('金额'))?></div>
+            <div class="col-sm-1 text-right"><?=H(T('金额'))?></div>
         </div>
         <?php foreach ($order->items as $vItem) { ?>
         <div class="row">
@@ -63,7 +63,7 @@
             <div class="col-sm-1"><?=H(($vItem['unit_price']==-1) ? T('待询价') :  money_format('%.2n', $vItem['unit_price'] * $vItem['quantity']))?></div>
         </div>
         <?php }?>
-        <div class="">
+        <div class="text-right" style="background:#f0f4f7;">
             <?=H(T('合计: :total', [
                 ':total'=> ($order->price==-1) ? T('待询价') : money_format('%.2n', $order->price)
             ]))?>
