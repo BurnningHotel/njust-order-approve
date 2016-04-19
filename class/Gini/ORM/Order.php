@@ -85,14 +85,14 @@ class Order extends Hub\RObject
             $cTypes = [];
             $hazs = those('hazardous')->whose('cas_no')->isIn($casNOs);
             foreach ($hazs as $haz) {
-                $cTypes[$haz->cas_no] = $haz->type;
+                $cTypes[$haz->cas_no][] = $haz->type;
             }
         }
         if (!empty($cTypes)) {
             foreach ($items as &$item) {
                 if (!$item['cas_no']) continue;
                 if (!isset($cTypes[$item['cas_no']])) continue;
-                $item->hazardous_types = array_unique($cTypes[$item['cas_no']]);
+                $item['hazardous_types'] = array_unique($cTypes[$item['cas_no']]);
             }
         }
 

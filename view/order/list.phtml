@@ -1,4 +1,12 @@
 <?php
+$vTxtTitle = [
+    'chem_reagent'=> T('普通化学品'),
+    'hazardous'=> T('危险品'),
+    'drug_precursor'=> T('易制毒'),
+    'highly_toxic'=> T('剧毒品'),
+    'bio_reagent'=> T('生物试剂'),
+    'consumable'=> T('耗材'),
+];
 $vAllowOperate = count($operators);
 ?>
 <div class="board-content-header">
@@ -31,7 +39,12 @@ $vAllowOperate = count($operators);
                 <?php if ($tmpI++>3) { ?>
                 <div>...</div>
                 <?php } else { ?>
-                <div title="<?=H($vPData['name'])?> * <?=H($vPData['quantity'])?>"><?=H($vPData['name'])?> * <?=H($vPData['quantity'])?></div>
+                <div title="<?=H($vPData['name'])?> * <?=H($vPData['quantity'])?>">
+                    <?php foreach ((array) $vPData['hazardous_types'] as $vHTs) {?>
+                        <span class="product-type product-type-<?=H($vHTs)?>"><?=H($vTxtTitle[$vHTs])?></span>
+                    <?php }?>
+                    <?=H($vPData['name'])?> * <?=H($vPData['quantity'])?>
+                </div>
                 <?php }?>
             <?php }?>
             </li>
