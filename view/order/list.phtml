@@ -9,7 +9,9 @@ $vAllowOperate = count($operators);
         <li><?=H(T('买方'))?></li>
         <li><?=H(T('供应商'))?></li>
         <li><?=H(T('金额'))?></li>
+        <?php if (!$vAllowOperate) {?>
         <li><?=H(T('状态'))?></li>
+        <?php }?>
         <?php if ($vAllowOperate) {?>
         <li>&#160;</li>
         <?php }?>
@@ -19,7 +21,7 @@ $vAllowOperate = count($operators);
     <?php
     if (count($requests)) foreach ($requests as $vRequest) {?>
         <ul class="list-unstyled ul-list clearfix row<?=$vAllowOperate ? '' : ' ul-list-noop'?>">
-            <li style="font-size:11px;line-height:3.2em"><?=H($vRequest->order->ctime)?></li>
+            <li><?=H(date('Y-m-d H:i', strtotime($vRequest->order->ctime)))?></li>
             <li><a href="order-info/<?=H($vRequest->id)?>"><?=H($vRequest->order->voucher)?></a></li>
             <li>
             <?php 
@@ -29,14 +31,16 @@ $vAllowOperate = count($operators);
                 <?php if ($tmpI++>3) { ?>
                 <div>...</div>
                 <?php } else { ?>
-                <div title="<?=H($vPData['name'])?>"><?=H($vPData['name'])?></div>
+                <div title="<?=H($vPData['name'])?> * <?=H($vPData['quantity'])?>"><?=H($vPData['name'])?> * <?=H($vPData['quantity'])?></div>
                 <?php }?>
             <?php }?>
             </li>
             <li title="<?=H($vRequest->order->group->title)?>"><?=H($vRequest->order->group->title)?></li>
             <li title="<?=H($vRequest->order->vendor->name)?>"><?=H($vRequest->order->vendor->name)?></li>
             <li><?=H(money_format('%.2n', $vRequest->order->price))?></li>
+            <?php if (!$vAllowOperate) {?>
             <li><?=H(\Gini\ORM\Order::$status_title[$vRequest->order->status])?></li>
+            <?php }?>
             <?php if ($vAllowOperate) {?>
             <li>
                 <?php foreach ($operators as $vKey=>$vOp) {?>
