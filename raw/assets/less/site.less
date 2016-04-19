@@ -79,22 +79,6 @@
             }
         }
     }
-    .product-type {
-        display: inline-block;
-        color :#fff;
-        border-radius: 3px;
-        line-height: 1em;
-        padding: 3px 5px;
-        &-drug_precursor {
-            background: @backgroundColorDrugPrecursor;
-        }
-        &-hazardous {
-            background: @backgroundColorHazardous;
-        }
-        &-highly_toxic {
-            background: @backgroundColorHighlyToxic;
-        }
-    }
 }
 
 .board-info {
@@ -156,6 +140,23 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+    }
+}
+
+.product-type {
+    display: inline-block;
+    color :#fff;
+    border-radius: 3px;
+    line-height: 1em;
+    padding: 3px 5px;
+    &-drug_precursor {
+        background: @backgroundColorDrugPrecursor;
+    }
+    &-hazardous {
+        background: @backgroundColorHazardous;
+    }
+    &-highly_toxic {
+        background: @backgroundColorHighlyToxic;
     }
 }
 
