@@ -1,5 +1,5 @@
 <div class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width:400px;">
         <div class="modal-content">
             <form method="post" action="ajax/request/post">
                 <input type="hidden" name="id" value="<?=H($id)?>"/>
@@ -9,7 +9,7 @@
                     <h4 class="modal-title"><?=H($title)?></h4>
                 </div>
                 <div class="modal-body">
-                    <textarea name="note" placeholder="<?=H(T('您可以在这里填写备注信息'))?>" class="form-control" style="resize:vertical;" rows="10"></textarea>
+                    <textarea name="note" placeholder="<?=H(T('您可以在这里填写备注信息'))?>" class="form-control" style="resize:vertical;" rows="5"></textarea>
                 </div>
             </form>
             <div class="modal-footer">
