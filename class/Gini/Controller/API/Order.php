@@ -80,14 +80,14 @@ class Order extends \Gini\Controller\API
 
         $request = a('request', ['voucher'=> $voucher]);
         if ($request->id && $request->status==\Gini\ORM\Request::STATUS_UNIVERS_PASSED) {
-            return self::_approve($voucher, $request);
+            return self::_approve($voucher);
         }
 
         if ($request->id && in_array($request->status, [
             \Gini\ORM\Request::STATUS_COLLEGE_FAILED,
             \Gini\ORM\Request::STATUS_UNIVERS_FAILED,
         ])) {
-            return self::_reject($voucher, $request);
+            return self::_reject($voucher);
         }
 
         $request->voucher = $voucher;
@@ -98,21 +98,56 @@ class Order extends \Gini\Controller\API
         $request->save();
     }
 
-    private static function _approve($voucher, $request=null)
+    private static function _approve($voucher)
     {
-        // TODO
-        // 远程修改订单状态
+        $rpc = self::_getRPC('order');
+        $bool = $rpc->mall->order->updateOrder($voucher, [
+            'status' => \Gini\ORM\Order::STATUS_APPROVED,
+        ], [
+            'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
+        ]);
+        return $bool;
     }
 
-    private static function _reject($voucher, $request=null)
+    private static function _reject($voucher)
     {
-        // TODO
-        // 远程修改订单状态
+        $rpc = self::_getRPC('order');
+        $bool = $rpc->mall->order->updateOrder($voucher, [
+            'status' => \Gini\ORM\Order::STATUS_CANCELED,
+        ], [
+            'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
+        ]);
+        return $bool;
     }
 
     private static function _isHazPro($casNO)
     {
-        // TODO
-        if (!$cas_no) return;
+        if (!$casNO) return;
+        if (a('hazardous', ['cas_no'=> $casNO])->id) {
+            return true;
+        }
+    }
+
+    private static $_RPCs = [];
+    private static function _getRPC($type)
+    {
+        $confs = \Gini\Config::get('hub.rpc');
+        if (!isset($confs[$type])) {
+            $type = 'default';
+        }
+        $conf = $confs[$type] ?: [];
+        if (!self::$_RPCs[$type]) {
+            $rpc = \Gini\IoC::construct('\Gini\RPC', $conf['url']);
+            self::$_RPCs[$type] = $rpc;
+            $client = \Gini\Config::get('hub.client');
+            $token = $rpc->mall->authorize($client['id'], $client['secret']);
+            if (!$token) {
+                \Gini\Logger::of('njust-order-approve')
+                    ->error('Hub\\RObject getRPC: authorization failed with {client_id}/{client_secret} !',
+                        ['client_id' => $client['id'], 'client_secret' => $client['secret']]);
+            }
+        }
+
+        return self::$_RPCs[$type];
     }
 }

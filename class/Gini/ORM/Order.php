@@ -73,7 +73,30 @@ class Order extends Hub\RObject
         $data['group_id'] = (int)$rdata['customer'];
         $data['vendor_id'] = (int)$rdata['vendor'];
         $data['user_id'] = (int)$rdata['customer_owner'];
-        $data['items'] = json_encode($rdata['items']);
+        $items = (array) $rdata['items'];
+
+        $casNOs = [];
+        foreach ($items as $item) {
+            if (!$item['cas_no']) continue;
+            $casNOs[] = $item['cas_no'];
+        }
+        $casNOs = array_unique($casNOs);
+        if (!empty($casNOs)) {
+            $cTypes = [];
+            $hazs = those('hazardous')->whose('cas_no')->isIn($casNOs);
+            foreach ($hazs as $haz) {
+                $cTypes[$haz->cas_no] = $haz->type;
+            }
+        }
+        if (!empty($cTypes)) {
+            foreach ($items as &$item) {
+                if (!$item['cas_no']) continue;
+                if (!isset($cTypes[$item['cas_no']])) continue;
+                $item->hazardous_types = array_unique($cTypes[$item['cas_no']]);
+            }
+        }
+
+        $data['items'] = json_encode($items);
 
         $data['_extra'] = J(array_diff_key($rdata, $data));
 

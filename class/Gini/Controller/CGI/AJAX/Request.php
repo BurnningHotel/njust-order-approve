@@ -189,6 +189,7 @@ class Request extends \Gini\Controller\CGI
                     if ($toStatus == \Gini\ORM\Request::STATUS_UNIVERS_PASSED) {
                         $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_APPROVED,
+                            'mall_description'=> $note,
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
                         ]);
@@ -198,6 +199,7 @@ class Request extends \Gini\Controller\CGI
                     ])) {
                         $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_CANCELED,
+                            'mall_description'=> $note,
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
                         ]);
@@ -331,7 +333,7 @@ class Request extends \Gini\Controller\CGI
             $client = \Gini\Config::get('hub.client');
             $token = $rpc->mall->authorize($client['id'], $client['secret']);
             if (!$token) {
-                \Gini\Logger::of('lab-orders')
+                \Gini\Logger::of('njust-order-approve')
                     ->error('Hub\\RObject getRPC: authorization failed with {client_id}/{client_secret} !',
                         ['client_id' => $client['id'], 'client_secret' => $client['secret']]);
             }
