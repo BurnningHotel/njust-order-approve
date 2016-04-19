@@ -1,3 +1,13 @@
+<?php
+$vTxtTitle = [
+    'chem_reagent'=> T('普通化学品'),
+    'hazardous'=> T('危险品'),
+    'drug_precursor'=> T('易制毒'),
+    'highly_toxic'=> T('剧毒品'),
+    'bio_reagent'=> T('生物试剂'),
+    'consumable'=> T('耗材'),
+];
+?>
 <div class="board-info clearfix" data-require="page/order">
     <div class="board-info-title">
         <?=H(T('订单#:voucher', [':voucher'=> $order->voucher]))?>
@@ -54,7 +64,12 @@
         </div>
         <?php foreach ($order->items as $vItem) { ?>
         <div class="row board-table-row board-table-li">
-            <div class="col col-sm-3"><?=H($vItem['name'])?></div>
+            <div class="col col-sm-3">
+                <?php foreach ((array) $vItem['hazardous_types'] as $vHTs) {?>
+                    <span class="product-type product-type-<?=H($vHTs)?>"><?=H($vTxtTitle[$vHTs])?></span>
+                <?php }?>
+                <?=H($vItem['name'])?>
+            </div>
             <div class="col col-sm-2"><?=H($vItem['manufacturer'])?></div>
             <div class="col col-sm-2"><?=H($vItem['catalog_no'])?></div>
             <div class="col col-sm-2"><?=H($vItem['package'])?></div>
