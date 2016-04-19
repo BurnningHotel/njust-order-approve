@@ -77,14 +77,16 @@
     </div>
 
     <?php $vComments = $order->comments;?>
-    <div>
+    <div class="board-info-title">
         <div><?=H(T('跟踪信息'))?></div>
-        <?php foreach ((array)$vComments as $vI=>$vT) {?>
-            <?=H(is_numeric($vT['ctime']) ? date('Y-m-d H:i:s', $vT['ctime']) : $vT['ctime'])?>
-            <span><?= \Michelf\Markdown::defaultTransform($vT['author']) ?></span>
-            <?php if ($vT['d']) {?>
-                <?= \Michelf\Markdown::defaultTransform(nl2br($vT['content'])); ?>
-            <?php }?>
-        <?php }?>
     </div>
+    <ul>
+    <?php foreach ((array)$vComments as $vI=>$vT) {?><li>
+        <?=H(is_numeric($vT['ctime']) ? date('Y-m-d H:i:s', $vT['ctime']) : $vT['ctime'])?>
+        <span><?= \Michelf\Markdown::defaultTransform($vT['author']) ?></span>
+        <?php if ($vT['content']) {?>
+            <?= \Michelf\Markdown::defaultTransform(nl2br($vT['content'])); ?>
+        <?php }?>
+    </li><?php }?>
+    </ul>
 </div>
