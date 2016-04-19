@@ -36,7 +36,7 @@ $vAllowOperate = count($operators);
             <li title="<?=H($vRequest->order->group->title)?>"><?=H($vRequest->order->group->title)?></li>
             <li title="<?=H($vRequest->order->vendor->name)?>"><?=H($vRequest->order->vendor->name)?></li>
             <li><?=H(money_format('%.2n', $vRequest->order->price))?></li>
-            <li><?=H(\Gini\ORM\Request::$status_titles[$vRequest->status])?></li>
+            <li><?=H(\Gini\ORM\Order::$status_title[$vRequest->order->status])?></li>
             <?php if ($vAllowOperate) {?>
             <li>
                 <?php foreach ($operators as $vKey=>$vOp) {?>
