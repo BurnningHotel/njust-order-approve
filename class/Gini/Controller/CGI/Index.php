@@ -12,7 +12,8 @@ class Index extends Layout\Common
     public function actionOrder($type='pending')
     {
         $vars = [
-            'list'=> (string)\Gini\CGI::request("ajax/request/more/0/{$type}", $this->env)->execute()->content()
+            'list'=> (string)\Gini\CGI::request("ajax/request/more/0/{$type}", $this->env)->execute()->content(),
+            'type'=> $type
         ];
         $this->view->body = V('order', $vars);
     }

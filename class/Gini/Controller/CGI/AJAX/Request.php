@@ -13,7 +13,7 @@ namespace Gini\Controller\CGI\AJAX;
 
 class Request extends \Gini\Controller\CGI
 {
-    public function actionMore($start = 0, $type = 'pending')
+    public function actionMore($page = 1, $type = 'pending')
     {
         $me = _G('ME');
         $group = _G('GROUP');
@@ -21,25 +21,29 @@ class Request extends \Gini\Controller\CGI
             return;
         }
         list($pendingStatus, $finishedStatus) = self::_getListStatus($group->id);
-        $start = (int) max($start, 0);
+        $page = (int) max($page, 1);
         $form = $this->form();
         $q = $form['q'];
         if ($type=='pending') {
-            $requests = self::_getMoreRequest($start, $pendingStatus, $q);
+            list($total, $requests) = self::_getMoreRequest($page, $pendingStatus, $q);
         }
         else {
-            $requests = self::_getMoreRequest($start, $finishedStatus, $q);
+            list($total, $requests) = self::_getMoreRequest($page, $finishedStatus, $q);
         }
 
         return \Gini\IoC::construct('\Gini\CGI\Response\HTML', V('order/list', [
             'requests'=> $requests,
-            'operators'=> $type=='pending' ? self::_getAllowedOperators($group->id) : null
+            'operators'=> $type=='pending' ? self::_getAllowedOperators($group->id) : null,
+            'type'=> $type,
+            'page'=> $page,
+            'total'=> $total
         ]));
     }
 
-    private static function _getMoreRequest($start, $status, $querystring=null)
+    private static function _getMoreRequest($page, $status, $querystring=null)
     {
         $limit = 25;
+        $start = ($page - 1) * $limit;
         $params = [];
         if (empty($status)) {
             $sql = "SELECT id FROM request";
@@ -58,11 +62,12 @@ class Request extends \Gini\Controller\CGI
             $params[':voucher'] = $params[':querystring'] = $querystring;
         }
         $requests = those('request')->query($sql, null, $params);
+        $total = $request->totalCount();
 
         foreach ($requests as $request) {
             $request->order = a('order', ['voucher'=> $request->voucher]);
         }
-        return $requests;
+        return [$total, $requests];
     }
 
     private static function _getListStatus($groupID)

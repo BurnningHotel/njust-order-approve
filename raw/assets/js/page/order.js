@@ -28,5 +28,22 @@ define('page/order', ['jquery', 'utils/bootbox'], function(jQuery, Bootbox) {
 			$modal.modal('hide');
 		});
 	});
+	$(document).on('click', '.app-q-search-handler', function() {
+		var $form = $(this).parents('form');
+		var q = $form.find('[name=q]').val();
+		var action = $form.attr('action');
+		search({
+			url: action
+			,q: q
+		});
+		return false;
+	});
+
+	function search(params) {
+		$.get(params.url, params, function(html) {
+			$('.board-content').html(html);
+		});
+	}
+
 });
 
