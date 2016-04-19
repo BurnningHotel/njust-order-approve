@@ -17,5 +17,6 @@
         "require": {
             "michelf/php-markdown": "@stable"
         }
+    }
 }
 
