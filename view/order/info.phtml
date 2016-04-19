@@ -63,14 +63,14 @@
             <div class="col col-sm-1 text-right"><?=H(($vItem['unit_price']==-1) ? T('待询价') :  money_format('%.2n', $vItem['unit_price'] * $vItem['quantity']))?></div>
         </div>
         <?php }?>
-        <div class="board-table-footer text-right">
+        <div class="board-table-footer text-right row board-table-row">
             <?=H(T('合计: :total', [
                 ':total'=> ($order->price==-1) ? T('待询价') : money_format('%.2n', $order->price)
             ]))?>
         </div>
     </div>
     
-    <div>
+    <div class="text-center">
         <?php if (count($operators)) foreach ($operators as $vKey=>$vOp) {?>
         <span class="app-op-per-handler btn btn-link" data-id="<?=H($request->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
         <?php }?>
