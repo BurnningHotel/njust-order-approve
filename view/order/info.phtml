@@ -1,20 +1,79 @@
-<div class="board-header clearfix" data-require="page/order">
-订单#<?=$order->voucher?> <?=\Gini\ORM\Order::$status_title[$order->status]?>
-<?=$order->vendor->name?>
-<?=$order->group->title?> <?=$order->user->name?>
-<?=$order->address?> <?=$order->postcode?>
-<?=$order->phone?> <?=$order->email?>
-<?php foreach ($order->items as $vItem) { ?>
-    <?=$vItem['name']?>
-    <?=$vItem['manufacturer']?>
-    <?=$vItem['catalog_no']?>
-    <?=$vItem['package']?>
-    <?=round($vItem['unit_price'], 2)?>
-    <?=$vItem['quantity']?>
-    <?=round($vItem['unit_price'] * $vItem['quantity'], 2)?>
-<?php }?>
-<?=$order->price?>
-<?php if (count($operators)) foreach ($operators as $vKey=>$vOp) {?>
-<span class="app-op-per-handler btn btn-link" data-id="<?=H($request->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
-<?php }?>
+<div class="board-info clearfix" data-require="page/order">
+    <div class="board-info-title">
+        <?=H(T('订单#:voucher', [':voucher'=> $order->voucher]))?>
+        <span class="status-span"><?=\Gini\ORM\Order::$status_title[$order->status]?></span>
+    </div>
+    <?php
+    $vData = [
+        [
+            'title'=> T('供应商'),
+            'data'=> [
+                [T('供应商'), $order->vendor->name],
+            ]
+        ],
+        [
+            'title'=> T('买方信息'),
+            'data'=> [
+                [T('买方'), $order->group->title],
+                [T('买方负责人'), $order->user->name],
+            ]
+        ],
+        [
+            'title'=> T('送货信息'),
+            'data'=> [
+                [T('地址'), $order->address],
+                [T('邮政编码'), $order->postcode],
+                [T('电话'), $order->phone],
+                [T('电子邮箱'), $order->phone],
+            ]
+        ],
+    ];
+    foreach ($vData as $vD) {
+    ?>
+    <div class="board-info-block">
+        <div class="board-info-block-title"><?=H($vD['title'])?></div>
+        <?php foreach ($vD['data'] as $vDI) {?>
+        <dl>
+            <dt><?=H($vDI[0])?></dt>
+            <dd><?=H($vDI[1])?></dd>
+        </dl>
+        <?php }?>
+    </div>
+    <?php }?>
+
+    <div class="board-info-block">
+        <div class="board-info-block-title"><?=H(T('商品清单'))?></div>
+        <div class="row">
+            <div class="col-sm-3"><?=H(T('商品'))?></div>
+            <div class="col-sm-2"><?=H(T('生产商'))?></div>
+            <div class="col-sm-2"><?=H(T('货号'))?></div>
+            <div class="col-sm-2"><?=H(T('包装'))?></div>
+            <div class="col-sm-1"><?=H(T('单价'))?></div>
+            <div class="col-sm-1"><?=H(T('数量'))?></div>
+            <div class="col-sm-1"><?=H(T('金额'))?></div>
+        </div>
+        <?php foreach ($order->items as $vItem) { ?>
+        <div class="row">
+            <div class="col-sm-3"><?=H($vItem['name'])?></div>
+            <div class="col-sm-2"><?=H($vItem['manufacturer'])?></div>
+            <div class="col-sm-2"><?=H($vItem['catalog_no'])?></div>
+            <div class="col-sm-2"><?=H($vItem['package'])?></div>
+            <div class="col-sm-1"><?=H(($vItem['unit_price']==-1) ? T('待询价') : money_format('%.2n', $vItem['unit_price']))?></div>
+            <div class="col-sm-1"><?=H($vItem['quantity'])?></div>
+            <div class="col-sm-1"><?=H(($vItem['unit_price']==-1) ? T('待询价') :  money_format('%.2n', $vItem['unit_price'] * $vItem['quantity']))?></div>
+        </div>
+        <?php }?>
+        <div class="">
+            <?=H(T('合计: :total', [
+                ':total'=> ($order->price==-1) ? T('待询价') : money_format('%.2n', $order->price)
+            ]))?>
+        </div>
+    </div>
+    
+    <div>
+        <?php if (count($operators)) foreach ($operators as $vKey=>$vOp) {?>
+        <span class="app-op-per-handler btn btn-link" data-id="<?=H($request->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
+        <?php }?>
+    </div>
+
 </div>
