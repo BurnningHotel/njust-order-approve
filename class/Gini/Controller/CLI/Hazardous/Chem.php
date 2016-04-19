@@ -31,7 +31,7 @@ class Chem extends \Gini\Controller\CLI
 	{
 		$db = \Gini\Database::db();
         $db->query('truncate hazardous');
-        $types = ['drug_precursor', 'highly_toxic', 'hazardousardous'];
+        $types = ['drug_precursor', 'highly_toxic', 'hazardous'];
         foreach ($types as $type) {
             $csv = new \Gini\CSV(APP_PATH.'/'.DATA_DIR.'/hazardous/'.$type.'.csv', 'r');
             $csv->read();
