@@ -12,6 +12,10 @@
         "css": "assets/css",
         "js": "assets/js",
         "*": "assets"
-    }
+    },
+    "composer": {
+        "require": {
+            "michelf/php-markdown": "@stable"
+        }
 }
 
