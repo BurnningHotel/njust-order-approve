@@ -72,7 +72,7 @@
     
     <div class="text-center">
         <?php if (count($operators)) foreach ($operators as $vKey=>$vOp) {?>
-        <span class="app-op-per-handler btn btn-link" data-id="<?=H($request->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
+        <span class="app-op-per-handler btn btn-<?=($vOp['to_status']%2==1) ? 'primary' : 'danger'?>" data-id="<?=H($request->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
         <?php }?>
     </div>
 
@@ -83,7 +83,6 @@
     <ul>
     <?php foreach ((array)$vComments as $vI=>$vT) {?><li>
         <?=H(is_numeric($vT['ctime']) ? date('Y-m-d H:i:s', $vT['ctime']) : $vT['ctime'])?>
-        <span><?= \Michelf\Markdown::defaultTransform($vT['author']) ?></span>
         <?php if ($vT['content']) {?>
             <?= \Michelf\Markdown::defaultTransform(nl2br($vT['content'])); ?>
         <?php }?>
