@@ -62,12 +62,12 @@ class Request extends \Gini\Controller\CGI
             $params[':voucher'] = $params[':querystring'] = $querystring;
         }
         $requests = those('request')->query($sql, null, $params);
-        $total = $request->totalCount();
+        $total = $requests->totalCount();
 
         foreach ($requests as $request) {
             $request->order = a('order', ['voucher'=> $request->voucher]);
         }
-        return [$total, $requests];
+        return [ceil($total/$limit), $requests];
     }
 
     private static function _getListStatus($groupID)

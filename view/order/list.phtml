@@ -48,3 +48,18 @@ $vAllowOperate = count($operators);
     <?php }?>
 </div>
 
+<ul>
+<?php 
+    $vPFrom = max(1, $page-5);
+    $vPTo = min($total, $page+5);
+?>
+<?php if ($vPFrom!=1) {?>
+    <li data-page="1" data-type="<?=H($type)?>" class="app-pager-li-handler<?=($page==1) ? ' app-pager-li-active' : ''?>"><?=H(T('首页'))?></li>
+<?php }?>
+<?php for ($i=$vPFrom; $i<=$vPTo; $i++) {?>
+    <li data-page="<?=H($i)?>" data-type="<?=H($type)?>" class="app-pager-li-handler<?=($page==$i) ? ' app-pager-li-active' : ''?>"><?=H($i)?></li>
+<?php }?>
+<?php if ($vPTo!=$total) {?>
+    <li data-page="<?=H($total)?>" data-type="<?=H($type)?>" class="app-pager-li-handler<?=($page==$total) ? ' app-pager-li-active' : ''?>"><?=H(T('尾页'))?></li>
+<?php }?>
+</ul>
