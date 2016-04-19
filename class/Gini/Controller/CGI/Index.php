@@ -25,7 +25,7 @@ class Index extends Layout\Common
         $this->view->body = V('order/info', [
             'request'=> $request,
             'order'=> $order,
-            'operators'=> self::_getAllowedOperators($group->id)
+            'operators'=> self::_getAllowedOperators($group->id, $request->status)
         ]);
     }
 
@@ -35,7 +35,7 @@ class Index extends Layout\Common
         $this->redirect('/');
     }
 
-    private static function _getAllowedOperators($groupID)
+    private static function _getAllowedOperators($groupID, $status)
     {
         $result = [];
         if (!$groupID) {
@@ -48,7 +48,9 @@ class Index extends Layout\Common
         $operators = (array) \Gini\Config::get('njust.operators');
         foreach ((array) $allowedOperators[$groupID]['operators'] as $key) {
             if (isset($operators[$key])) {
-                $result[$key] = $operators[$key];
+                if ($status==$operators[$key]['from_status']) {
+                    $result[$key] = $operators[$key];
+                }
             }
         }
 

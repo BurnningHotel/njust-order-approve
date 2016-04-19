@@ -14,7 +14,7 @@
     <?=round($vItem['unit_price'] * $vItem['quantity'], 2)?>
 <?php }?>
 <?=$order->price?>
-<?php foreach ($operators as $vKey=>$vOp) {?>
+<?php if (count($operators)) foreach ($operators as $vKey=>$vOp) {?>
 <span class="app-op-per-handler btn btn-link" data-id="<?=H($request->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
 <?php }?>
 </div>
