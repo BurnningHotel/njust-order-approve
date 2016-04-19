@@ -21,7 +21,7 @@ class Index extends Layout\Common
     {
         $group = _G('GROUP');
         $request = a('request', $requestID);
-        $order = a('order', $request->voucher);
+        $order = a('order', ['voucher'=> $request->voucher]);
         $this->view->body = V('order/info', [
             'request'=> $request,
             'order'=> $order,
