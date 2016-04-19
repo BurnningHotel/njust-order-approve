@@ -9,10 +9,10 @@ class Index extends Layout\Common
         return $this->redirect('order');
     }
 
-    public function actionOrder()
+    public function actionOrder($type='pending')
     {
         $vars = [
-            'list'=> (string)\Gini\CGI::request('ajax/request/more')->execute()->content()
+            'list'=> (string)\Gini\CGI::request("ajax/request/more/0/{$type}", $this->env)->execute()->content()
         ];
         $this->view->body = V('order', $vars);
     }

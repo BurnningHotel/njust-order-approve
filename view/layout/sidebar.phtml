@@ -15,7 +15,13 @@ $group = _G('GROUP');
     <div class="menu-item">
         <a href="order" <?= $checkActive(['order'])?>>
             <i class="fa fa-fw fa-list"></i>
-            <span><?= H(T('订单管理')) ?></span>
+            <span><?= H(T('待处理')) ?></span>
+        </a>
+    </div>
+    <div class="menu-item">
+        <a href="order/done" <?= $checkActive(['order'])?>>
+            <i class="fa fa-fw fa-list"></i>
+            <span><?= H(T('已处理')) ?></span>
         </a>
     </div>
 </div>
