@@ -11,17 +11,17 @@ $vAllowOperate = count($operators);
 ?>
 <div class="board-content-header">
     <ul class="list-unstyled ul-list clearfix<?=$vAllowOperate ? '' : ' ul-list-noop'?>">
-        <li><?=H(T('创建时间'))?></li>
-        <li><?=H(T('订单编号'))?></li>
-        <li><?=H(T('商品'))?></li>
-        <li><?=H(T('买方'))?></li>
-        <li><?=H(T('供应商'))?></li>
-        <li><?=H(T('金额'))?></li>
+        <li class="ul-list-ctime"><?=H(T('创建时间'))?></li>
+        <li class="ul-list-voucher"><?=H(T('订单编号'))?></li>
+        <li class="ul-list-product"><?=H(T('商品'))?></li>
+        <li class="ul-list-customer"><?=H(T('买方'))?></li>
+        <li class="ul-list-vendor"><?=H(T('供应商'))?></li>
+        <li class="ul-list-price"><?=H(T('金额'))?></li>
         <?php if (!$vAllowOperate) {?>
-        <li><?=H(T('状态'))?></li>
+        <li class="ul-list-status"><?=H(T('状态'))?></li>
         <?php }?>
         <?php if ($vAllowOperate) {?>
-        <li>&#160;</li>
+        <li class="ul-list-op">&#160;</li>
         <?php }?>
     </ul>
 </div>
@@ -29,9 +29,9 @@ $vAllowOperate = count($operators);
     <?php
     if (count($requests)) foreach ($requests as $vRequest) {?>
         <ul class="list-unstyled ul-list clearfix row<?=$vAllowOperate ? '' : ' ul-list-noop'?>">
-            <li><?=H(date('Y-m-d H:i', strtotime($vRequest->order->ctime)))?></li>
-            <li><a href="order-info/<?=H($vRequest->id)?>"><?=H($vRequest->order->voucher)?></a></li>
-            <li>
+            <li class="ul-list-ctime"><?=H(date('Y-m-d H:i', strtotime($vRequest->order->ctime)))?></li>
+            <li class="ul-list-voucher"><a href="order-info/<?=H($vRequest->id)?>"><?=H($vRequest->order->voucher)?></a></li>
+            <li class="ul-list-product">
             <?php 
             $vItems = (array)$vRequest->order->items;
             $tmpI = 1;
@@ -48,14 +48,14 @@ $vAllowOperate = count($operators);
                 <?php }?>
             <?php }?>
             </li>
-            <li title="<?=H($vRequest->order->group->title)?>"><?=H($vRequest->order->group->title)?></li>
-            <li title="<?=H($vRequest->order->vendor->name)?>"><?=H($vRequest->order->vendor->name)?></li>
-            <li><?=H(money_format('%.2n', $vRequest->order->price))?></li>
+            <li class="ul-list-customer" title="<?=H($vRequest->order->group->title)?>"><?=H($vRequest->order->group->title)?></li>
+            <li class="ul-list-vendor" title="<?=H($vRequest->order->vendor->name)?>"><?=H($vRequest->order->vendor->abbr())?></li>
+            <li class="ul-list-price"><?=H(money_format('%.2n', $vRequest->order->price))?></li>
             <?php if (!$vAllowOperate) {?>
-            <li><?=H(\Gini\ORM\Order::$status_title[$vRequest->order->status])?></li>
+            <li class="ul-list-status"><?=H(\Gini\ORM\Order::$status_title[$vRequest->order->status])?></li>
             <?php }?>
             <?php if ($vAllowOperate) {?>
-            <li>
+            <li class="ul-list-op">
                 <?php foreach ($operators as $vKey=>$vOp) {?>
                 <span class="app-op-per-handler btn btn-link" data-id="<?=H($vRequest->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
                 <?php }?>
