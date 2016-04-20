@@ -195,7 +195,12 @@ class Request extends \Gini\Controller\CGI
                     if ($toStatus == \Gini\ORM\Request::STATUS_UNIVERS_PASSED) {
                         $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_APPROVED,
-                            'mall_description'=> $note,
+                            'mall_description'=> [
+                                'a'=> H(T('订单审核通过')),
+                                't'=> date('Y-m-d H:i:s'),
+                                'u'=> $me->id,
+                                'd'=> $note
+                            ]
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
                         ]);
@@ -208,7 +213,12 @@ class Request extends \Gini\Controller\CGI
                     ])) {
                         $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_CANCELED,
-                            'mall_description'=> $note,
+                            'mall_description'=> [
+                                'a'=> H(T('订单审核失败')),
+                                't'=> date('Y-m-d H:i:s'),
+                                'u'=> $me->id,
+                                'd'=> $note
+                            ]
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
                         ]);
