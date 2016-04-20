@@ -53,8 +53,13 @@ class Request extends \Gini\Controller\CGI
             $sql = "SELECT id FROM request";
         }
         else {
-            $sql = "SELECT id FROM request WHERE status in (:status)";
-            $params[':status'] = implode(',', $status);  
+            $sts = [];
+            foreach ($status as $i=>$st) {
+                $sts[":status{$i}"] = $st;
+            }
+            $params = array_merge($params, $sts);
+            $sts = implode(',', array_keys($sts));
+            $sql = "SELECT id FROM request WHERE status in ({$sts})";
         }
 
         if (!$querystring) {
@@ -155,7 +160,7 @@ class Request extends \Gini\Controller\CGI
         } elseif (count($ids) > 1) {
             return $this->_execCLI($key, $note, $ids);
         } elseif (count($ids) == 1) {
-            $id = array_pop($id);
+            $id = array_pop($ids);
         }
 
         $operator = $allowedOperators[$key];
@@ -164,6 +169,7 @@ class Request extends \Gini\Controller\CGI
         $bool = false;
         if ($id && in_array($toStatus, [
             \Gini\ORM\Request::STATUS_COLLEGE_FAILED,
+            \Gini\ORM\Request::STATUS_COLLEGE_PASSED,
             \Gini\ORM\Request::STATUS_UNIVERS_FAILED,
             \Gini\ORM\Request::STATUS_UNIVERS_PASSED,
         ])) {
@@ -193,6 +199,9 @@ class Request extends \Gini\Controller\CGI
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
                         ]);
+                        if (!$bool) {
+                            throw new \Exception();
+                        }
                     } elseif (in_array($toStatus, [
                         \Gini\ORM\Request::STATUS_UNIVERS_FAILED,
                         \Gini\ORM\Request::STATUS_COLLEGE_FAILED,
@@ -203,10 +212,11 @@ class Request extends \Gini\Controller\CGI
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
                         ]);
+                        if (!$bool) {
+                            throw new \Exception();
+                        }
                     }
-                    if (!$bool) {
-                        throw new \Exception();
-                    }
+                    $bool = true;
                     $db->commit();
                 }
             } catch (\Exception $e) {
