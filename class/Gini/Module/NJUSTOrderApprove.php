@@ -37,6 +37,20 @@ class NJUSTOrderApprove
 
     public static function diagnose()
     {
+        $errors = [];
+        $followedNodes = (array)\Gini\Config::get('njust.followed_nodes');
+        if (empty($followedNodes)) {
+            $errors[] = 'njust.followed_nodes is empty';
+        }
+
+        $groups = (array)\Gini\Config::get('njust.group');
+        if (empty($groups)) {
+            $errors[] = 'njust.groups is empty';
+        }
+
+        if (!empty($errors)) {
+            return $errors;
+        }
     }
 
 }

@@ -52,26 +52,4 @@ class Vendor extends Hub\RObject
         return \Gini\ImageCache::makeURL($url, $size);
     }
 
-    public function getNodeInfo()
-    {
-        if (!$this->id) return false;
-        $node = \Gini\Config::get('mall.node_id');
-        if (!$node) return false;
-        $rpc = $this->getRPC('vendor')->mall->vendor;
-        return (array)$rpc->getVendorNode($this->id, $node);
-    }
-
-    public function getRatings()
-    {
-		return TRUE;
-		/*
-		todo
-        return $this->getRPC('vendor')->mall->vendor->getVendorRatings($this->id);
-		*/
-    }
-
-    public function getComments($start, $num)
-    {
-        return $this->getRPC('vendor')->mall->vendor->getVendorComments($this->id, $start, $num);
-    }
 }

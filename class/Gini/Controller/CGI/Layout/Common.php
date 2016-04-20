@@ -9,18 +9,16 @@ abstract class Common extends \Gini\Controller\CGI\Layout
 
     public function __preAction($action, &$params)
     {
-        /*
         // 对于已经登录但是没有选组的用户, 需要强制去选择组
         if (\Gini\Gapper\Client::getLoginStep() !== \Gini\Gapper\Client::STEP_DONE) {
             return \Gini\Gapper\Client::goLogin();
         }
 
         // 如果所属的组没有访问应用的权限直接登出
-        if (!in_array(_G('GROUP')->id, \Gini\Config::get('order.group'))) {
+        if (!in_array(_G('GROUP')->id, array_keys((array)\Gini\Config::get('njust.group')))) {
             \Gini\Gapper\Client::logout();
             return \Gini\Gapper\Client::goLogin();
         }
-         */
 
         return parent::__preAction($action, $params);
     }
