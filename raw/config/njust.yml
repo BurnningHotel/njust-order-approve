@@ -1,6 +1,6 @@
 ---
-# followed_nodes:
-#   - njust
+followed_nodes:
+  - njust
 
 operators:
   college_pass:
@@ -22,7 +22,6 @@ operators:
 
 # group:
 #   GROUPID:
-#     node: NODE
 #     operators:
 #       - UNIQ-KEY
 
