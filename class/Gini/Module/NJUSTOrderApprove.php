@@ -23,6 +23,9 @@ class NJUSTOrderApprove
             if (isset($allowedGroups[$group->id])) {
                 _G('GROUP', $group);
             }
+            else {
+                \Gini\Gapper\Client::resetGroup();
+            }
         }
 
         isset($_GET['locale']) and $_SESSION['locale'] = $_GET['locale'];
