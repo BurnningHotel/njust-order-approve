@@ -30,6 +30,9 @@ class Request extends Object
     ];
 
     const STATUS_PENDING = 0; // 待处理
+    // WARN
+    //  通过的操作状态应该是奇数
+    //  拒绝的操作状态应该是偶数
     const STATUS_COLLEGE_PASSED = 1; // 学院管理方审核通过
     const STATUS_COLLEGE_FAILED = 2; // 学院管理方审核拒绝
     const STATUS_UNIVERS_PASSED = 3; // 学校管理方审核通过
