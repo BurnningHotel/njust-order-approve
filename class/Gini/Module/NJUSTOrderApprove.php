@@ -20,7 +20,7 @@ class NJUSTOrderApprove
         $group = a('group', $me->id ? \Gini\Gapper\Client::getGroupID() : null);
         if ($group->id) {
             $allowedGroups = (array) \Gini\Config::get('njust.group');
-            if (in_array($groupd->id, array_keys($allowedGroups))) {
+            if (isset($allowedGroups[$group->id])) {
                 _G('GROUP', $group);
             }
             else {
