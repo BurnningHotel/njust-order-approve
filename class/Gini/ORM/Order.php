@@ -62,6 +62,7 @@ class Order extends Hub\RObject
         self::DELIVER_STATUS_RECEIVED => '已到货',
     ];
 
+    private static $_chemdbRPC;
     public function convertRPCData(array $rdata)
     {
         // TODO 需要确保hub-order API返回的数据符合要求
@@ -81,18 +82,23 @@ class Order extends Hub\RObject
             $casNOs[] = $item['cas_no'];
         }
         $casNOs = array_unique($casNOs);
+
         if (!empty($casNOs)) {
-            $cTypes = [];
-            $hazs = those('hazardous')->whose('cas_no')->isIn($casNOs);
-            foreach ($hazs as $haz) {
-                $cTypes[$haz->cas_no][] = $haz->type;
+            if (!self::$_chemdbRPC) {
+                $conf = \Gini\Config::get('cheml-db.rpc');
+                $url = $conf['url'];
+                self::$_chemdbRPC = \Gini\IoC::construct('\Gini\RPC', $url);
             }
+
+            $rpc = self::$_chemdbRPC;
+            $cTypes = (array)$rpc->product->chem->getTypes($casNOs);
         }
+
         if (!empty($cTypes)) {
             foreach ($items as &$item) {
                 if (!$item['cas_no']) continue;
                 if (!isset($cTypes[$item['cas_no']])) continue;
-                $item['hazardous_types'] = array_unique($cTypes[$item['cas_no']]);
+                $item['product_types'] = array_unique($cTypes[$item['cas_no']]);
             }
         }
 
