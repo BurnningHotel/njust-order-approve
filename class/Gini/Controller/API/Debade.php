@@ -123,9 +123,7 @@ class Debade extends \Gini\Controller\API
     private static function _isHazPro($casNO)
     {
         if (!$casNO) return;
-        if (a('hazardous', ['cas_no'=> $casNO])->id) {
-            return true;
-        }
+        return \Gini\ORM\Product::isHaz($casNO);
     }
 
     private static $_RPCs = [];
