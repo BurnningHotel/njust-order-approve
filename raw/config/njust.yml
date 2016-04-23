@@ -20,6 +20,8 @@ operators:
     from_status: 1
     to_status: 4
 
+need_access_control: true
+
 # group:
 #   GROUPID:
 #     operators:

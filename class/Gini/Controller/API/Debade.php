@@ -2,7 +2,7 @@
 
 namespace Gini\Controller\API;
 
-class Order extends \Gini\Controller\API
+class Debade extends \Gini\Controller\API
 {
     public function actionGetNotified($message)
     {

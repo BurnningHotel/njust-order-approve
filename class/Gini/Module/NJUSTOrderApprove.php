@@ -19,13 +19,7 @@ class NJUSTOrderApprove
 
         $group = a('group', $me->id ? \Gini\Gapper\Client::getGroupID() : null);
         if ($group->id) {
-            $allowedGroups = (array) \Gini\Config::get('njust.group');
-            if (isset($allowedGroups[$group->id])) {
-                _G('GROUP', $group);
-            }
-            else {
-                \Gini\Gapper\Client::resetGroup();
-            }
+            _G('GROUP', $group);
         }
 
         isset($_GET['locale']) and $_SESSION['locale'] = $_GET['locale'];
