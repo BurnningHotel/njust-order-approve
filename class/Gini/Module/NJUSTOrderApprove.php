@@ -18,9 +18,7 @@ class NJUSTOrderApprove
         $me->id or \Gini\Gapper\Client::logout();
 
         $group = a('group', $me->id ? \Gini\Gapper\Client::getGroupID() : null);
-        if ($group->id) {
-            _G('GROUP', $group);
-        }
+        _G('GROUP', $group);
 
         isset($_GET['locale']) and $_SESSION['locale'] = $_GET['locale'];
         isset($_SESSION['locale']) and \Gini\Config::set('system.locale', $_SESSION['locale']);
