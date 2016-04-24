@@ -67,6 +67,7 @@ class Order extends Hub\RObject
     {
         // TODO 需要确保hub-order API返回的数据符合要求
         $data = [];
+        $data['id'] = $rdata['order_id'];
         $data['voucher'] = $rdata['voucher'];
         $data['price'] = (float) $rdata['price'];
         $data['ctime'] = date('Y-m-d H:i:s', (int)$rdata['ctime']); // datetime
@@ -85,7 +86,7 @@ class Order extends Hub\RObject
 
         if (!empty($casNOs)) {
             if (!self::$_chemdbRPC) {
-                $conf = \Gini\Config::get('cheml-db.rpc');
+                $conf = \Gini\Config::get('chem-db.rpc');
                 $url = $conf['url'];
                 self::$_chemdbRPC = \Gini\IoC::construct('\Gini\RPC', $url);
             }
