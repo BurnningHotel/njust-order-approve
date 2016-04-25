@@ -65,7 +65,7 @@ class Request extends \Gini\Controller\CGI
         if ($querystring) {
             $cond = empty($status) ? 'WHERE' : 'AND';
             $sql = "{$sql} {$cond} (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring))";
-            $params[':voucher'] = $params[':querystring'] = $querystring;
+            $params[':voucher'] = $params[':querystring'] = trim($querystring);
         }
 
         $sql = "{$sql} ORDER BY id DESC LIMIT {$start}, {$limit}";
