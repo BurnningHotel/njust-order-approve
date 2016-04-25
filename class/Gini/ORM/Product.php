@@ -224,7 +224,7 @@ class Product extends Hub\RObject
     {
         if (!$casNO) return;
         if (!self::$_chemdbRPC) {
-            $conf = \Gini\Config::get('cheml-db.rpc');
+            $conf = \Gini\Config::get('chem-db.rpc');
             $url = $conf['url'];
             self::$_chemdbRPC = \Gini\IoC::construct('\Gini\RPC', $url);
         }
