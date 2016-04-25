@@ -44,6 +44,7 @@ class Order extends Hub\RObject
         self::STATUS_NEED_CUSTOMER_APPROVE => '待买方确认',
         self::STATUS_NEED_VENDOR_APPROVE => '待供应商确认',
         self::STATUS_NEED_VENDOR_APPROVE_FIRST => '待供应商先确认',
+        self::STATUS_NEED_MANAGER_APPROVE => '待审核',
         self::STATUS_READY_TO_ORDER => '已确认',
         self::STATUS_APPROVED => '待付款',
         self::STATUS_RETURNING => '退货中',
