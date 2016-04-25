@@ -62,7 +62,9 @@ class Debade extends \Gini\Controller\API
         $followedStatus = \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE;
         if ($status!=$followedStatus) return;
 
-        list($ocode, $oname) = self::_getOrgazination($node, $data['customer']);
+        $organization = self::_getOrgazination($node, $data['customer']);
+        $ocode = $organization['code'];
+        $oname = $organization['name'];
         if (!$ocode || !$oname) return;
 
         $items = (array)$data['items'];
@@ -113,7 +115,9 @@ class Debade extends \Gini\Controller\API
         $rpc = \Gini\IoC::construct('\Gini\RPC', $url);
         $rpc->tagdb->authorize($clientID, $clientSecret);
         $tagName = "labmai-{$node}/{$groupID}";
-        return $rpc->tagdb->data->get($tagName);
+        $data = $rpc->tagdb->data->get($tagName);
+        $organization = (array)$data['organization'];
+        return $organization;
     }
 
     private static function _approve($voucher)
