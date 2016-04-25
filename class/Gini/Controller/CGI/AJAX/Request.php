@@ -62,14 +62,14 @@ class Request extends \Gini\Controller\CGI
             $sql = "SELECT id FROM request WHERE status in ({$sts})";
         }
 
-        if (!$querystring) {
-            $sql = "{$sql} LIMIT {$start}, {$limit}";
-        }
-        else {
+        if ($querystring) {
             $cond = empty($status) ? 'WHERE' : 'AND';
-            $sql = "{$sql} {$cond} (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring)) LIMIT {$start}, {$limit}";
+            $sql = "{$sql} {$cond} (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring))";
             $params[':voucher'] = $params[':querystring'] = $querystring;
         }
+
+        $sql = "{$sql} ORDER BY id DESC LIMIT {$start}, {$limit}";
+
         $requests = those('request')->query($sql, null, $params);
         $total = $requests->totalCount();
 
