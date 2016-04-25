@@ -22,6 +22,13 @@ class Index extends Layout\Common
     {
         $group = _G('GROUP');
         $request = a('request', $requestID);
+        if (!$request->id) {
+            return $this->redirect('error/404');
+        }
+        if (!$request->isRW()) {
+            return $this->redirect('error/401');
+        }
+
         $order = a('order', ['voucher'=> $request->voucher]);
         $this->view->body = V('order/info', [
             'request'=> $request,

@@ -21,9 +21,12 @@ class Request extends Object
                            // ]
     public $product_name = 'string';
     public $product_cas_no = 'string';
+    public $organization_code = 'string:10';
+    public $organization_name = 'string:120';
 
     protected static $db_index = [
         'unique:voucher',
+        'organization_code',
         'status',
         'ctime',
         'fulltext:product_name,product_cas_no'
@@ -46,4 +49,25 @@ class Request extends Object
         self::STATUS_UNIVERS_FAILED=> '学校已拒绝',
     ];
 
+    public function isRW()
+    {
+        $group = _G('GROUP');
+        if (!$group->id) return false;
+
+        $groups = (array)\Gini\Config::get('njust.group');
+        $options = $groups[$group->id];
+        if (empty($options)) return false;
+
+        $organizations = $options['organizations'];
+        if (empty($organizations)) {
+            return true;
+        }
+
+        $code = $this->organization_code;
+        if (in_array($code, $organizations)) {
+            return true;
+        }
+
+        return false;
+    }
 }

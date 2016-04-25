@@ -1,0 +1,7 @@
+---
+rpc:
+  url: http://tag-db.labmai.com/api
+client:
+  id: CLIENTID
+  secret: CLIENTSECRET
+...

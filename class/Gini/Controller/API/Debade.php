@@ -62,6 +62,9 @@ class Debade extends \Gini\Controller\API
         $followedStatus = \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE;
         if ($status!=$followedStatus) return;
 
+        list($ocode, $oname) = self::_getOrgazination($node, $data['customer']);
+        if (!$ocode || !$oname) return;
+
         $items = (array)$data['items'];
         $needApprove = false;
         $pNames = [];
@@ -95,7 +98,22 @@ class Debade extends \Gini\Controller\API
         $request->ctime = $request->ctime ?: date('Y-m-d H:i:s');
         $request->product_name = implode(',', array_unique($pNames));
         $request->product_cas_no = implode(',', array_unique($pCASs));
+        $request->organization_code = $ocode;
+        $request->organization_name = $oname;
         $request->save();
+    }
+
+    private static function _getOrgazination($node, $groupID)
+    {
+        $conf = \Gini\Config::get('tag-db.rpc');
+        $url = $conf['url'];
+        $client = \Gini\Config::get('tag-db.client');
+        $clientID = $client['id'];
+        $clientSecret = $client['secret'];
+        $rpc = \Gini\IoC::construct('\Gini\RPC', $url);
+        $rpc->tagdb->authorize($clientID, $clientSecret);
+        $tagName = "labmai-{$node}/{$groupID}";
+        return $rpc->tagdb->data->get($tagName);
     }
 
     private static function _approve($voucher)

@@ -24,6 +24,8 @@ need_access_control: true
 
 # group:
 #   GROUPID:
+#     organizations:
+#       - ORG-CODE
 #     operators:
 #       - UNIQ-KEY
 

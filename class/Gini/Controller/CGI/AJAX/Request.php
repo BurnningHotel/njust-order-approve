@@ -49,6 +49,8 @@ class Request extends \Gini\Controller\CGI
         $limit = 25;
         $start = ($page - 1) * $limit;
         $params = [];
+        $hasWhere = false;
+
         if (empty($status)) {
             $sql = "SELECT id FROM request";
         }
@@ -60,10 +62,28 @@ class Request extends \Gini\Controller\CGI
             $params = array_merge($params, $sts);
             $sts = implode(',', array_keys($sts));
             $sql = "SELECT id FROM request WHERE status in ({$sts})";
+            $hasWhere = true;
+        }
+
+        $group = _G('GROUP');
+        $allowedOrgs = self::_getAllowedOrgs($group->id);
+        if ($allowedOrgs===false) {
+            return [0, []];
+        }
+        if (is_array($allowedOrgs) && count($allowedOrgs)) {
+            $nodes = [];
+            foreach ($allowedOrgs as $i=>$org) {
+                $nodes[":node{$i}"] = $org;
+            }
+            $params = array_merge($params, $nodes);
+            $nodes = implode(',', array_keys($nodes));
+            $cond = $hasWhere ? 'AND' : 'WHERE';
+            $sql = "{$sql} {$cond} organization_code in ({$nodes})";
+            $hasWhere = true;
         }
 
         if ($querystring) {
-            $cond = empty($status) ? 'WHERE' : 'AND';
+            $cond = $hasWhere ? 'AND' : 'WHERE';
             $sql = "{$sql} {$cond} (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring))";
             $params[':voucher'] = $params[':querystring'] = trim($querystring);
         }
@@ -177,7 +197,7 @@ class Request extends \Gini\Controller\CGI
             $db->beginTransaction();
             try {
                 $request = a('request', $id);
-                if (!$request->id || $request->status != $fromStatus) {
+                if (!$request->id || $request->status != $fromStatus || !$request->isRW()) {
                     throw new \Exception();
                 }
                 $rpc = self::_getRPC('order');
@@ -289,6 +309,8 @@ class Request extends \Gini\Controller\CGI
 
     private function _execCLI($key, $note, $ids = null)
     {
+        // TODO 批量审批以后一定会做的
+        return;
         $me = _G('ME');
         $group = _G('GROUP');
         $log = a('clilog');
@@ -360,5 +382,16 @@ class Request extends \Gini\Controller\CGI
         }
 
         return self::$_RPCs[$type];
+    }
+
+    private static function _getAllowedOrgs($groupID)
+    {
+        if (!$groupID) return false;
+        $groups = (array)\Gini\Config::get('njust.group');
+        $options = $groups[$group->id];
+        if (empty($options)) return false;
+        $organizations = (array)$options['organizations'];
+        if (empty($organizations)) return true;
+        return $organizations;
     }
 }
