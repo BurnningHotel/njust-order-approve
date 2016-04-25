@@ -388,7 +388,7 @@ class Request extends \Gini\Controller\CGI
     {
         if (!$groupID) return false;
         $groups = (array)\Gini\Config::get('njust.group');
-        $options = $groups[$group->id];
+        $options = $groups[$groupID];
         if (empty($options)) return false;
         $organizations = (array)$options['organizations'];
         if (empty($organizations)) return true;
