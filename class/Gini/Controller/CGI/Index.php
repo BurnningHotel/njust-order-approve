@@ -9,6 +9,24 @@ class Index extends Layout\Common
         return $this->redirect('order');
     }
 
+    public function actionWarnGroup()
+    {
+        $group = _G('GROUP');
+        if (!$group->id) {
+            return $this->redirect('error/401');
+        }
+        \Gini\Gapper\Client::logout();
+        if (\Gini\Config::get('njust.need_access_control')) {
+            $groups = (array)\Gini\Config::get('njust.group');
+            if (in_array($group->id, $groups)) {
+                return $this->redirect('home');
+            }
+            $this->view->body = V('warn-group', [
+                'group'=> $group
+            ]);
+        }
+    }
+
     public function actionOrder($type='pending')
     {
         $vars = [
