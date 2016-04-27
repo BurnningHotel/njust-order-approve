@@ -95,14 +95,16 @@ class Debade extends \Gini\Controller\API
             return self::_reject($voucher);
         }
 
-        $request->voucher = $voucher;
-        $request->status = \Gini\ORM\Request::STATUS_PENDING;
-        $request->ctime = $request->ctime ?: date('Y-m-d H:i:s');
-        $request->product_name = implode(',', array_unique($pNames));
-        $request->product_cas_no = implode(',', array_unique($pCASs));
-        $request->organization_code = $ocode;
-        $request->organization_name = $oname;
-        $request->save();
+        if (!$request->id) {
+            $request->voucher = $voucher;
+            $request->status = \Gini\ORM\Request::STATUS_PENDING;
+            $request->ctime = $request->ctime ?: date('Y-m-d H:i:s');
+            $request->product_name = implode(',', array_unique($pNames));
+            $request->product_cas_no = implode(',', array_unique($pCASs));
+            $request->organization_code = $ocode;
+            $request->organization_name = $oname;
+            $request->save();
+        }
     }
 
     private static function _getOrgazination($node, $groupID)
