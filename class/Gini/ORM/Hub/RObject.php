@@ -67,7 +67,7 @@ abstract class RObject extends \Gini\ORM\Object
                         \Gini\Logger::of('orm')->debug("cache hits on {key}", ['key'=>$key]);
                     } else {
                         \Gini\Logger::of('orm')->debug("cache missed on {key}", ['key'=>$key]);
-                        $rdata = $this->fetchRPC($criteria);
+                        $rdata = $this->fetchRPC($criteria['id'] ? $id : $criteria);
                         if (is_array($rdata) && count($rdata) > 0) {
                             $data = $this->convertRPCData($rdata);
                             // set ttl to cacheTimeout sec
