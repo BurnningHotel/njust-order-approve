@@ -208,7 +208,7 @@ class Request extends \Gini\Controller\CGI
                         [
                             'ctime'=> date('Y-m-d H:i:s'),
                             'operator'=> $me,
-                            'note'=> $note
+                            'note'=> $note ?: '--'
                         ]
                     ]);
                 }
@@ -220,7 +220,7 @@ class Request extends \Gini\Controller\CGI
                                 'a'=> H(T('订单已经被 :name(:group) 最终审核通过', [':name'=>$me->name, ':group'=>$group->title])),
                                 't'=> date('Y-m-d H:i:s'),
                                 'u'=> $me->id,
-                                'd'=> $note
+                                'd'=> $note ?: '--'
                             ]
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
@@ -235,7 +235,7 @@ class Request extends \Gini\Controller\CGI
                                 'a'=> H(T('订单已经被学院管理员 :name(:group) 审核通过', [':name'=>$me->name, ':group'=>$group->title])),
                                 't'=> date('Y-m-d H:i:s'),
                                 'u'=> $me->id,
-                                'd'=> $note
+                                'd'=> $note ?: '--'
                             ]
                         ], [
                             'status' => \Gini\ORM\Order::STATUS_NEED_MANAGER_APPROVE,
