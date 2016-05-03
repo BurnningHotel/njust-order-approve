@@ -187,6 +187,7 @@ class Request extends \Gini\Controller\CGI
         $fromStatus = $operator['from_status'];
         $toStatus = $operator['to_status'];
         $bool = false;
+        $message = '';
         if ($id && in_array($toStatus, [
             \Gini\ORM\Request::STATUS_COLLEGE_FAILED,
             \Gini\ORM\Request::STATUS_COLLEGE_PASSED,
@@ -247,6 +248,10 @@ class Request extends \Gini\Controller\CGI
                         \Gini\ORM\Request::STATUS_UNIVERS_FAILED,
                         \Gini\ORM\Request::STATUS_COLLEGE_FAILED,
                     ])) {
+                        if (!$note) {
+                            $message = T('请填写拒绝理由');
+                            throw new \Exception();
+                        }
                         $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_CANCELED,
                             'mall_description'=> [
@@ -273,7 +278,7 @@ class Request extends \Gini\Controller\CGI
         return \Gini\IoC::construct('\Gini\CGI\Response\JSON', [
             'code' => $bool ? 0 : 1,
             'id'=> $id, // request->id
-            'message' => $bool ? T('操作成功') : T('操作失败, 请您重试'),
+            'message' => $message ?: ($bool ? T('操作成功') : T('操作失败, 请您重试')),
         ]);
     }
 
