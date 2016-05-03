@@ -217,7 +217,7 @@ class Request extends \Gini\Controller\CGI
                         $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_APPROVED,
                             'mall_description'=> [
-                                'a'=> H(T('订单已经被 :name 最终审核通过', [':name'=>$me->name])),
+                                'a'=> H(T('订单已经被 :name(:group) 最终审核通过', [':name'=>$me->name, ':group'=>$group->title])),
                                 't'=> date('Y-m-d H:i:s'),
                                 'u'=> $me->id,
                                 'd'=> $note
@@ -232,7 +232,7 @@ class Request extends \Gini\Controller\CGI
                     else if ($toStatus == \Gini\ORM\Request::STATUS_COLLEGE_PASSED) {
                         $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'mall_description'=> [
-                                'a'=> H(T('订单已经被学院管理员 :name 审核通过', [':name'=>$me->name])),
+                                'a'=> H(T('订单已经被学院管理员 :name(:group) 审核通过', [':name'=>$me->name, ':group'=>$group->title])),
                                 't'=> date('Y-m-d H:i:s'),
                                 'u'=> $me->id,
                                 'd'=> $note
@@ -255,7 +255,7 @@ class Request extends \Gini\Controller\CGI
                         $bool = $rpc->mall->order->updateOrder($request->voucher, [
                             'status' => \Gini\ORM\Order::STATUS_CANCELED,
                             'mall_description'=> [
-                                'a'=> H(T('订单被 :name 拒绝', [':name'=>$me->name])),
+                                'a'=> H(T('订单被 :name(:group) 拒绝', [':name'=>$me->name, ':group'=>$group->title])),
                                 't'=> date('Y-m-d H:i:s'),
                                 'u'=> $me->id,
                                 'd'=> $note
