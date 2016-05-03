@@ -223,17 +223,14 @@ class Product extends Hub\RObject
     public static function getHazTypes($casNO)
     {
         if (!$casNO) return;
+        $hazArr = (array)\Gini\Config::get('njust.monitored_types');
+        if (empty($hazArr)) return;
+
         if (!self::$_chemdbRPC) {
             $conf = \Gini\Config::get('chem-db.rpc');
             $url = $conf['url'];
             self::$_chemdbRPC = \Gini\IoC::construct('\Gini\RPC', $url);
         }
-
-        $hazArr = [
-            'hazardous', //=> T('危险品'),
-            'drug_precursor', //=> T('易制毒'),
-            'highly_toxic', //=> T('剧毒品'),
-        ];
 
         $rpc = self::$_chemdbRPC;
         $types = (array)$rpc->product->chem->getTypes($casNO);

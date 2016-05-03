@@ -2,6 +2,12 @@
 followed_nodes:
   - njust
 
+# monitored_types:
+#   - hazardous # 危化品
+#   - drug_precursor # 易制毒
+#   - highly_toxic # 剧毒品
+#   - explosive # 易制爆
+
 operators:
   college_pass:
     title: 通过

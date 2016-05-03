@@ -40,6 +40,11 @@ class NJUSTOrderApprove
             $errors[] = 'njust.groups is empty';
         }
 
+        $types = (array)\Gini\Config::get('njust.monitored_types');
+        if (empty($types)) {
+            $errors[] = 'njust.monitored_types is empty';
+        }
+
         if (!empty($errors)) {
             return $errors;
         }

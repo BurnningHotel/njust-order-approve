@@ -76,6 +76,7 @@ class Debade extends \Gini\Controller\API
             $pNames[] = $item['name'];
             if (self::_isHazPro($casNO)) {
                 $needApprove = true;
+                break;
             }
         }
 
