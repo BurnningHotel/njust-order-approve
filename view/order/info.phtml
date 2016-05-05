@@ -51,29 +51,29 @@ $vTxtTitle = [
     <div class="board-info-block">
         <div class="board-info-block-title"><?=H(T('商品清单'))?></div>
         <div class="row board-table-row board-table-header" style="">
-            <div class="col-sm-3"><?=H(T('商品'))?></div>
-            <div class="col-sm-2"><?=H(T('生产商'))?></div>
-            <div class="col-sm-2"><?=H(T('货号'))?></div>
-            <div class="col-sm-2"><?=H(T('包装'))?></div>
-            <div class="col-sm-1 text-right"><?=H(T('单价'))?></div>
-            <div class="col-sm-1 text-right"><?=H(T('数量'))?></div>
-            <div class="col-sm-1 text-right"><?=H(T('金额'))?></div>
+            <div class="col-xs-2"><?=H(T('商品'))?></div>
+            <div class="col-xs-2"><?=H(T('生产商'))?></div>
+            <div class="col-xs-1"><?=H(T('货号'))?></div>
+            <div class="col-xs-2"><?=H(T('包装'))?></div>
+            <div class="col-xs-2 text-right"><?=H(T('单价'))?></div>
+            <div class="col-xs-1 text-right"><?=H(T('数量'))?></div>
+            <div class="col-xs-2 text-right"><?=H(T('金额'))?></div>
         </div>
         <?php foreach ($order->items as $vItem) { ?>
         <div class="row board-table-row board-table-li">
-            <div class="col col-sm-3">
+            <div class="col col-xs-2">
                 <?php foreach ((array) $vItem['product_types'] as $vHTs) {?>
                     <?php if (!isset($vTxtTitle[$vHTs])) continue;?>
                     <span class="product-type product-type-<?=H($vHTs)?>"><?=H($vTxtTitle[$vHTs])?></span>
                 <?php }?>
                 <?=H($vItem['name'])?>
             </div>
-            <div class="col col-sm-2"><?=H($vItem['manufacturer'])?></div>
-            <div class="col col-sm-2"><?=H($vItem['catalog_no'])?></div>
-            <div class="col col-sm-2"><?=H($vItem['package'])?></div>
-            <div class="col col-sm-1 text-right"><?=H(($vItem['unit_price']==-1) ? T('待询价') : money_format('%.2n', $vItem['unit_price']))?></div>
-            <div class="col col-sm-1 text-right"><?=H($vItem['quantity'])?></div>
-            <div class="col col-sm-1 text-right"><?=H(($vItem['unit_price']==-1) ? T('待询价') :  money_format('%.2n', $vItem['unit_price'] * $vItem['quantity']))?></div>
+            <div class="col col-xs-2"><?=H($vItem['manufacturer'])?></div>
+            <div class="col col-xs-1"><?=H($vItem['catalog_no'])?></div>
+            <div class="col col-xs-2"><?=H($vItem['package'])?></div>
+            <div class="col col-xs-2 text-right"><?=H(($vItem['unit_price']==-1) ? T('待询价') : money_format('%.2n', $vItem['unit_price']))?></div>
+            <div class="col col-xs-1 text-right"><?=H($vItem['quantity'])?></div>
+            <div class="col col-xs-2 text-right"><?=H(($vItem['unit_price']==-1) ? T('待询价') :  money_format('%.2n', $vItem['unit_price'] * $vItem['quantity']))?></div>
         </div>
         <?php }?>
         <div class="board-table-footer text-right row board-table-row">
