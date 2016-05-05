@@ -2,7 +2,7 @@
     "id": "njust-order-approve",
     "name": "NJUST order multiply approval",
     "description": "App description...",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "dependencies": {
         "gini": "*",
         "debade": "*",
