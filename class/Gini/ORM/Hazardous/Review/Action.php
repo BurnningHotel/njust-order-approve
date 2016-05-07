@@ -16,7 +16,7 @@ class Action extends \Gini\ORM\Object
     const TYPE_STEP_UNIVERS = 2;
 
     protected static $db_index = [
-        'unique:user,code,type'
+        'unique:group,user,code,type'
     ];
 
     private static $collegeOperators = [
