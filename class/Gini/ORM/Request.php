@@ -67,7 +67,7 @@ class Request extends Object
 
         $actions = those('hazardous/review/action')->whose('user')->is($me)
                     ->andWhose('group')->is($group)
-                    ->andWhose('code')->is(substr($this->code, 0, 2));
+                    ->andWhose('code')->is(substr($this->organization_code, 0, 2));
         if (!count($actions)) return $result;
 
         foreach ($actions as $action) {
