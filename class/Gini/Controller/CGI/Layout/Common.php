@@ -14,17 +14,6 @@ abstract class Common extends \Gini\Controller\CGI\Layout
             return \Gini\Gapper\Client::goLogin();
         }
 
-        if (\Gini\Config::get('njust.need_access_control') && !in_array(_G('GROUP')->id, array_keys((array)\Gini\Config::get('njust.group')))) {
-            $route = $this->env['route'];
-            if (!in_array($route, [
-                'warn-group',
-                'warngroup',
-                'logout'
-            ])) {
-                $this->redirect('warn-group');
-            }
-        }
-
         return parent::__preAction($action, $params);
     }
 
