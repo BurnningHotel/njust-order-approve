@@ -51,8 +51,11 @@ class Request extends Object
 
     public function isRW()
     {
+        $me = _G('ME');
+        $group = _G('GROUP');
         $actions = those('hazardous/review/action')->whose('user')->is($me)
-                    ->andWhose('code')->is(substr($this->code, 0, 2));
+                    ->andWhose('group')->is($group)
+                    ->andWhose('code')->is(substr($this->organization_code, 0, 2));
         if (count($actions)) {
             return true;
         }
