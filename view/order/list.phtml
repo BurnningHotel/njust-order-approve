@@ -4,7 +4,7 @@ $vTxtTitle = [
     'drug_precursor'=> T('易制毒'),
     'highly_toxic'=> T('剧毒品'),
 ];
-$vAllowOperate = count($operators);
+$vAllowOperate = ($type=='pending') ? true : false;
 ?>
 <div class="board-content-header">
     <ul class="list-unstyled ul-list clearfix<?=$vAllowOperate ? '' : ' ul-list-noop'?>">
@@ -51,10 +51,9 @@ $vAllowOperate = count($operators);
             <li class="ul-list-li-price"><?=H(money_format('%.2n', $vRequest->order->price))?></li>
             <?php if (!$vAllowOperate) {?>
             <li class="ul-list-li-status"><?=H(\Gini\ORM\Order::$status_title[$vRequest->order->status])?></li>
-            <?php }?>
-            <?php if ($vAllowOperate) {?>
+            <?php } else {?>
             <li class="ul-list-li-op">
-                <?php foreach ($operators as $vKey=>$vOp) {?>
+                <?php foreach ((array)$vRequest->getAllowedOperators() as $vKey=>$vOp) {?>
                 <span class="app-op-per-handler btn btn-link" data-id="<?=H($vRequest->id)?>" data-key="<?=H($vKey)?>"><?=H($vOp['title'])?></span>
                 <?php }?>
             </li>

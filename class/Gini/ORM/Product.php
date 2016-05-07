@@ -219,11 +219,18 @@ class Product extends Hub\RObject
         }
     }
 
+    public static function getMonitoredTypes()
+    {
+        $types = those('hazardous/review/type')->get('id', 'key');
+        return $types;
+    }
+
     private static $_chemdbRPC;
     public static function getHazTypes($casNO)
     {
         if (!$casNO) return;
-        $hazArr = (array)\Gini\Config::get('njust.monitored_types');
+
+        $hazArr = self::getMonitoredTypes();
         if (empty($hazArr)) return;
 
         if (!self::$_chemdbRPC) {

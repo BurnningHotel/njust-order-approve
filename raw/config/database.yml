@@ -4,4 +4,8 @@ default:
   username: genee
   password: 83719730
 
+hazardous: # 用来获取危化品管理员设置的分级审查信息
+  dsn: mysql:dbname=njust_order_approve;host=pihizi-qa-mysql.docker.local
+  username: genee
+  password: 83719730
 ...

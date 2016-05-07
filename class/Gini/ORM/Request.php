@@ -51,23 +51,72 @@ class Request extends Object
 
     public function isRW()
     {
-        $group = _G('GROUP');
-        if (!$group->id) return false;
-
-        $groups = (array)\Gini\Config::get('njust.group');
-        $options = $groups[$group->id];
-        if (empty($options)) return false;
-
-        $organizations = $options['organizations'];
-        if (empty($organizations)) {
+        $actions = those('hazardous/review/action')->whose('user')->is($me)
+                    ->andWhose('code')->is(substr($this->code, 0, 2));
+        if (count($actions)) {
             return true;
         }
-
-        $code = $this->organization_code;
-        if (in_array($code, $organizations)) {
-            return true;
-        }
-
         return false;
     }
+
+    public function getAllowedOperators()
+    {
+        $result = [];
+        $me = _G('ME');
+
+        $actions = those('hazardous/review/action')->whose('user')->is($me)
+                    ->andWhose('code')->is(substr($this->code, 0, 2));
+        if (!count($actions)) return $result;
+
+        foreach ($actions as $action) {
+            foreach ((array)$action->getOperators() as $key=>$op) {
+                if ((string)$this->status===(string)$op['from_status']) {
+                    $result[$key] = $op;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public static function getAllowedPendingStatus($user)
+    {
+        $result = [];
+        $codes = [];
+        $actions = those('hazardous/review/action')->whose('user')->is($user);
+        foreach ($actions as $action) {
+            if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_COLLEGE) {
+                $result[] = self::STATUS_PENDING;
+                $codes[] = $action->code;
+            }
+            else if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_UNIVERS) {
+                $result[] = self::STATUS_COLLEGE_PASSED;
+                $codes[] = $action->code;
+            }
+        }
+        return [$result, $codes];
+    }
+
+    public static function getAllowedDoneStatus($user)
+    {
+        $result = [];
+        $codes = [];
+        $actions = those('hazardous/review/action')->whose('user')->is($user);
+        foreach ($actions as $action) {
+            if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_COLLEGE) {
+                $result[] = self::STATUS_COLLEGE_PASSED;
+                $result[] = self::STATUS_COLLEGE_FAILED;
+                $result[] = self::STATUS_UNIVERS_PASSED;
+                $result[] = self::STATUS_UNIVERS_FAILED;
+                $codes[] = $action->code;
+            }
+            else if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_UNIVERS) {
+                $result[] = self::STATUS_UNIVERS_PASSED;
+                $result[] = self::STATUS_UNIVERS_FAILED;
+                $codes[] = $action->code;
+            }
+        }
+        return [$result, $codes];
+    }
+
 }

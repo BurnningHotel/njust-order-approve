@@ -24,7 +24,7 @@ class NJUSTOrderApprove
         isset($_SESSION['locale']) and \Gini\Config::set('system.locale', $_SESSION['locale']);
         \Gini\I18N::setup();
 
-        setlocale(LC_MONETARY, (\Gini\Config::get('system.locale') ?: 'en_US').'.UTF-8');
+        \Gini\Locale::set(LC_MONETARY, (\Gini\Config::get('system.locale') ?: 'en_US').'.UTF-8');
     }
 
     public static function diagnose()
@@ -33,16 +33,6 @@ class NJUSTOrderApprove
         $followedNodes = (array)\Gini\Config::get('njust.followed_nodes');
         if (empty($followedNodes)) {
             $errors[] = 'njust.followed_nodes is empty';
-        }
-
-        $groups = (array)\Gini\Config::get('njust.group');
-        if (empty($groups)) {
-            $errors[] = 'njust.groups is empty';
-        }
-
-        $types = (array)\Gini\Config::get('njust.monitored_types');
-        if (empty($types)) {
-            $errors[] = 'njust.monitored_types is empty';
         }
 
         if (!empty($errors)) {
