@@ -6,6 +6,7 @@
     "dependencies": {
         "gini": ">=0.3.16",
         "debade": "*",
+        "locale": "*",
         "gapper-auth-njust": "*"
     },
     "rurl": {
