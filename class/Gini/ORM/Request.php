@@ -63,8 +63,10 @@ class Request extends Object
     {
         $result = [];
         $me = _G('ME');
+        $group = _G('GROUP');
 
         $actions = those('hazardous/review/action')->whose('user')->is($me)
+                    ->andWhose('group')->is($group)
                     ->andWhose('code')->is(substr($this->code, 0, 2));
         if (!count($actions)) return $result;
 
@@ -79,11 +81,11 @@ class Request extends Object
         return $result;
     }
 
-    public static function getAllowedPendingStatus($user)
+    public static function getAllowedPendingStatus($user, $group)
     {
         $result = [];
         $codes = [];
-        $actions = those('hazardous/review/action')->whose('user')->is($user);
+        $actions = those('hazardous/review/action')->whose('user')->is($user)->andWhose('group')->is($group);
         foreach ($actions as $action) {
             if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_COLLEGE) {
                 $result[] = self::STATUS_PENDING;
@@ -97,11 +99,11 @@ class Request extends Object
         return [$result, $codes];
     }
 
-    public static function getAllowedDoneStatus($user)
+    public static function getAllowedDoneStatus($user, $group)
     {
         $result = [];
         $codes = [];
-        $actions = those('hazardous/review/action')->whose('user')->is($user);
+        $actions = those('hazardous/review/action')->whose('user')->is($user)->andWhose('group')->is($group);
         foreach ($actions as $action) {
             if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_COLLEGE) {
                 $result[] = self::STATUS_COLLEGE_PASSED;

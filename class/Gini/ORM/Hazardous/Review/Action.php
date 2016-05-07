@@ -9,6 +9,7 @@ class Action extends \Gini\ORM\Object
 
     public $type = 'int'; // action 类型：一级审查，二级审查；院级审查，校级审查
     public $user = 'object:user'; // 动作的执行者
+    public $group = 'object:group'; // user 所属的组
     public $code = 'string:10'; // 组织机构的代码
 
     const TYPE_STEP_COLLEGE = 1;

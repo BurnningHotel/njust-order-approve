@@ -41,7 +41,8 @@ class Request extends \Gini\Controller\CGI
     private static function _getMoreRequest($page, $type, $querystring=null)
     {
         $me = _G('ME');
-        list($status, $codes) = ($type=='pending') ? \Gini\ORM\Request::getAllowedPendingStatus($me) : \Gini\ORM\Request::getAllowedDoneStatus($me);
+        $group = _G('GROUP');
+        list($status, $codes) = ($type=='pending') ? \Gini\ORM\Request::getAllowedPendingStatus($me, $group) : \Gini\ORM\Request::getAllowedDoneStatus($me, $group);
         if (empty($status) || empty($codes)) {
             return [0, []];
         }
