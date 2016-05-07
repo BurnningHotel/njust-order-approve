@@ -40,4 +40,9 @@ $group = _G('GROUP');
             <span><?= H(T('已处理')) ?></span>
         </a>
     </div>
+    <?php foreach ((array)$apps as $app_id => $app) {?>
+    <div class="menu-item">
+        <a href="gapper/client/go/<?=H($app_id)?>/<?=$group->id?>"><i class="fa fa-fw fa-<?= H($app['font_icon']?:'cubes') ?>"></i> &nbsp;<?= H($app['short_title'] ?: $app['title']) ?></a>
+    </div>
+    <?php }?>
 </div>

@@ -4,7 +4,7 @@
     "description": "App description...",
     "version": "0.1.1",
     "dependencies": {
-        "gini": "*",
+        "gini": ">=0.3.16",
         "debade": "*",
         "gapper-auth-njust": "*"
     },

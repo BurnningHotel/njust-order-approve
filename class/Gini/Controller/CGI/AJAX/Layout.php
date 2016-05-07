@@ -15,8 +15,12 @@ class Layout extends \Gini\Controller\CGI
 
     public function actionSidebar()
     {
+        $apps = _G('GROUP')->getApps();
+        unset($apps[\Gini\Gapper\Client::getId()]);
+
         $vars = [
             'route' => $this->env['route'],
+            'apps' => $apps,
         ];
 
         return \Gini\IoC::construct('\Gini\CGI\Response\HTML', V('layout/sidebar', $vars));
