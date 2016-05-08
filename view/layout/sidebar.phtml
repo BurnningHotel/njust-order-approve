@@ -16,28 +16,16 @@ $group = _G('GROUP');
 ?>
 
 <div class="sidebar-menu">
-    <div class="user-icon">
-        <div class="user-icon-image">
-            <?php if (parse_url($me->icon)['scheme'] == 'initials') { ?>
-                <div class="user-icon-text"><?= H($me->initials)?></div>
-            <?php } else { ?>
-                <img src="<?= $me->icon(72)?>" data-retina-src="<?= $me->icon(144)?>">
-            <?php } ?>
-        </div>
-
-        <div title="<?= H($me->name)?>" class="user-name nowrap text-center"><?= H($me->name) ?></div>
-        <div title="<?= H($group->abbr)?>" class="user-group nowrap text-muted text-center"><?= H($group->abbr) ?></div>
-    </div>
     <div class="menu-item">
         <a href="order" <?= $checkActive(['order'], ['order/done', 'order-info'])?>>
             <i class="fa fa-fw fa-list"></i>
-            <span><?= H(T('待处理')) ?></span>
+            <span><?= H(T('待审采购')) ?></span>
         </a>
     </div>
     <div class="menu-item">
         <a href="order/done" <?= $checkActive(['order/done'], ['order/info'])?>>
             <i class="fa fa-fw fa-list"></i>
-            <span><?= H(T('已处理')) ?></span>
+            <span><?= H(T('审核历史')) ?></span>
         </a>
     </div>
     <?php foreach ((array)$apps as $app_id => $app) {?>
