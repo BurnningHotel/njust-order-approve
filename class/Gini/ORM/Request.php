@@ -87,41 +87,44 @@ class Request extends Object
     public static function getAllowedPendingStatus($user, $group)
     {
         $result = [];
-        $codes = [];
         $actions = those('hazardous/review/action')->whose('user')->is($user)->andWhose('group')->is($group);
         foreach ($actions as $action) {
             if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_COLLEGE) {
-                $result[] = self::STATUS_PENDING;
-                $codes[] = $action->code;
+                $result[$action->code][] = self::STATUS_PENDING;
             }
             else if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_UNIVERS) {
-                $result[] = self::STATUS_COLLEGE_PASSED;
-                $codes[] = $action->code;
+                $result[$action->code][] = self::STATUS_COLLEGE_PASSED;
             }
         }
-        return [$result, $codes];
+        return self::_unique($result);
     }
 
     public static function getAllowedDoneStatus($user, $group)
     {
         $result = [];
-        $codes = [];
         $actions = those('hazardous/review/action')->whose('user')->is($user)->andWhose('group')->is($group);
         foreach ($actions as $action) {
             if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_COLLEGE) {
-                $result[] = self::STATUS_COLLEGE_PASSED;
-                $result[] = self::STATUS_COLLEGE_FAILED;
-                $result[] = self::STATUS_UNIVERS_PASSED;
-                $result[] = self::STATUS_UNIVERS_FAILED;
-                $codes[] = $action->code;
+                $result[$action->code][] = self::STATUS_COLLEGE_PASSED;
+                $result[$action->code][] = self::STATUS_COLLEGE_FAILED;
+                $result[$action->code][] = self::STATUS_UNIVERS_PASSED;
+                $result[$action->code][] = self::STATUS_UNIVERS_FAILED;
             }
             else if ($action->type==\Gini\ORM\Hazardous\Review\Action::TYPE_STEP_UNIVERS) {
-                $result[] = self::STATUS_UNIVERS_PASSED;
-                $result[] = self::STATUS_UNIVERS_FAILED;
-                $codes[] = $action->code;
+                $result[$action->code][] = self::STATUS_UNIVERS_PASSED;
+                $result[$action->code][] = self::STATUS_UNIVERS_FAILED;
             }
         }
-        return [$result, $codes];
+        return self::_unique($result);
+    }
+
+    private static function _unique($data)
+    {
+        $result = [];
+        foreach ($data as $k=>$v) {
+            $result[$k] = array_unique($v);
+        }
+        return $result;
     }
 
 }

@@ -42,8 +42,8 @@ class Request extends \Gini\Controller\CGI
     {
         $me = _G('ME');
         $group = _G('GROUP');
-        list($status, $codes) = ($type=='pending') ? \Gini\ORM\Request::getAllowedPendingStatus($me, $group) : \Gini\ORM\Request::getAllowedDoneStatus($me, $group);
-        if (empty($status) || empty($codes)) {
+        $status = ($type=='pending') ? \Gini\ORM\Request::getAllowedPendingStatus($me, $group) : \Gini\ORM\Request::getAllowedDoneStatus($me, $group);
+        if (empty($status)) {
             return [0, []];
         }
 
@@ -51,25 +51,30 @@ class Request extends \Gini\Controller\CGI
         $start = ($page - 1) * $limit;
         $params = [];
 
-        $sts = [];
-        foreach ($status as $i=>$st) {
-            $sts[":status{$i}"] = $st;
-        }
-        $params = array_merge($params, $sts);
-        $sts = implode(',', array_keys($sts));
-        $sql = "SELECT id FROM request WHERE status in ({$sts})";
+        $sql = "SELECT id FROM request";
 
+
+        $sts = [];
         $ocs = [];
-        foreach ($codes as $i=>$code) {
-            $ocs[":oc{$i}"] = "{$code}%";
+        $i = 0;
+        $where = [];
+        foreach ($status as $code=>$st) {
+            $tmpCodeKey = ":oc{$i}";
+            $ocs[$tmpCodeKey] = "{$code}%";
+            $tmpSts = [];
+            foreach ($st as $j=>$s) {
+                $tmpSts[":status{$i}{$j}"] = $s;
+            }
+            $sts = array_merge($sts, $tmpSts);
+            $tmpSts = implode(',', array_keys($tmpSts));
+            $where[] = "(organization_code LIKE {$tmpCodeKey} AND status in ({$tmpSts}))";
         }
+
+        $params = array_merge($params, $sts);
         $params = array_merge($params, $ocs);
-        $ocds = [];
-        foreach ($ocs as $ock=>$ocv) {
-            $ocds[] = "organization_code LIKE {$ock}";
-        }
-        $ocds = implode(' OR ', $ocds);
-        $sql = "{$sql} AND ({$ocds})";
+
+        $where = implode(' OR ', $where);
+        $sql = "{$sql} WHERE ({$where})";
 
         if ($querystring) {
             $sql = "{$sql} AND (voucher=:voucher OR MATCH(product_name,product_cas_no) AGAINST(:querystring))";
