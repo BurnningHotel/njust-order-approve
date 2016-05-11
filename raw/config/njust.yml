@@ -2,4 +2,6 @@
 followed_nodes:
   - njust
 
+home_app_client: HOMEAPPCLIENT
+
 ...
