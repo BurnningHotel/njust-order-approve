@@ -68,6 +68,7 @@ class Request extends \Gini\Controller\CGI
             $sts = array_merge($sts, $tmpSts);
             $tmpSts = implode(',', array_keys($tmpSts));
             $where[] = "(organization_code LIKE {$tmpCodeKey} AND status in ({$tmpSts}))";
+            $i++;
         }
 
         $params = array_merge($params, $sts);
